@@ -353,7 +353,7 @@ function phishing_boat.reclamp(value, min, max)
     local mid = (max-min)/2
     if value > min and value <= (min+mid) then retVal = min end
     if value < max and value > (max-mid) then retVal = max end
-    minetest.chat_send_all(value .. " - return: " ..retVal .. " - mid: " .. mid)
+    --minetest.chat_send_all(value .. " - return: " ..retVal .. " - mid: " .. mid)
     return retVal
 end
 
