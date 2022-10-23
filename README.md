@@ -1,7 +1,7 @@
-Minetest 5.4 mod: Steampunk Blimp
+Minetest 5.4 mod: Phishing Boat
 ========================================
 
-This mod implements a fantasy steampunk blimp for minetest.
+This mod implements a fantasy Phishing Boat for minetest.
 The mod was made for fun, but tries to provide an immersion on it's operation.
 It can carry 5 people.
 To fly it, it is necessary to provide some items, such as fuel to be burned and
