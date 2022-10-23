@@ -90,7 +90,7 @@ function phishing_boat.control(self, dtime, hull_direction, longit_speed, accel)
     end
 
     --do not exceed
-    local max_speed = 3
+    local max_speed = 4
     if longit_speed > max_speed then
         engineacc = engineacc - (longit_speed-max_speed)
     end
