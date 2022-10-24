@@ -26,18 +26,18 @@ The Phishing Boat inventory can be accessed by Aux (E) + rightclick.
 
 Shared owners:
 This vehicle was made to be shared with a team. So the owner can set more users to
-operate it. Inside the Phishing Boat, just use the command /blimp_share <name>
-To remove someone from the sharing, /blimp_remove <name>
-To list the owners, /blimp_list
-Is possible to lock the blimp access, so only the owners can enter: /blimp_lock true
-To let anyone enter, /blimp_lock false
+operate it. Inside the Phishing Boat, just use the command /phishing_boat_share <name>
+To remove someone from the sharing, /phishing_boat_remove <name>
+To list the owners, /phishing_boat_list
+Is possible to lock the blimp access, so only the owners can enter: /phishing_boat_lock true
+To let anyone enter, /phishing_boat_lock false
 All shared owners can access the blimp inventory
 
 Painting:
 As the planes, punch a dye against the hull, so the primary color will change
 To change the secondary color, punch a dye, but holding Aux (E) key.
 
-It is possible to set a logo on your Phishing Boat, so enter inside it and type the command /blimp_logo
+It is possible to set a logo on your Phishing Boat, so enter inside it and type the command /phishing_boat_logo
 Only the original owner can do the paintings
 
 Shortcuts:
@@ -64,7 +64,7 @@ an interpolation method on attach function.
 Rubber-band bug is from minetest nature, just close and reopen minetest to solve.
 Or try to live the Michael Jackson's way of life and learn the Moonwalk properly XD
 Some old versions of minetest can have an strange issue, the camera is set to
-the map center. So if it happens, just type /blimp_eject to be free again.
+the map center. So if it happens, just type /phishing_boat_eject to be free again.
 
 
 License of source code:
