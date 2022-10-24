@@ -22,11 +22,11 @@ hold sneak (shift).
 Forward increases the propeller power, Backward reduces. To go reverse, hold aux (E key)
 and backward together. There is a power mode. When the lever reaches the up limit, hold E
 and forward to increase the acceleration. But note that the boiler will lose pressure.
-The blimp inventory can be accessed by Aux (E) + rightclick.
+The Phishing Boat inventory can be accessed by Aux (E) + rightclick.
 
 Shared owners:
 This vehicle was made to be shared with a team. So the owner can set more users to
-operate it. Inside the blimp, just use the command /blimp_share <name>
+operate it. Inside the Phishing Boat, just use the command /blimp_share <name>
 To remove someone from the sharing, /blimp_remove <name>
 To list the owners, /blimp_list
 Is possible to lock the blimp access, so only the owners can enter: /blimp_lock true
@@ -37,7 +37,7 @@ Painting:
 As the planes, punch a dye against the hull, so the primary color will change
 To change the secondary color, punch a dye, but holding Aux (E) key.
 
-It is possible to set a logo on your blimp, so enter inside it and type the command /blimp_logo
+It is possible to set a logo on your Phishing Boat, so enter inside it and type the command /blimp_logo
 Only the original owner can do the paintings
 
 Shortcuts:
@@ -53,9 +53,9 @@ E + foward while in drive position: extra power
 Tip:
 Drive it gently.
 The captain can leave the drive position to walk too
-If a player goes timeout or logoff in flight, the blimp will "rescue" him if no other player
-enter the blimp, so is a good idea wait the friend at a secure place far from anyone who
-wants to enter the blimp.
+If a player goes timeout or logoff in flight, the Phishing Boat will "rescue" him if no other player
+enter the Phishing Boat, so is a good idea wait the friend at a secure place far from anyone who
+wants to enter the Phishing Boat.
 
 Know issues:
 The walk movement inside the ship is affected by server lag, because the lack of
