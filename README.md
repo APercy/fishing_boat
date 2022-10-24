@@ -29,9 +29,9 @@ This vehicle was made to be shared with a team. So the owner can set more users 
 operate it. Inside the Phishing Boat, just use the command /phishing_boat_share <name>
 To remove someone from the sharing, /phishing_boat_remove <name>
 To list the owners, /phishing_boat_list
-Is possible to lock the blimp access, so only the owners can enter: /phishing_boat_lock true
+Is possible to lock the Phishing Boat access, so only the owners can enter: /phishing_boat_lock true
 To let anyone enter, /phishing_boat_lock false
-All shared owners can access the blimp inventory
+All shared owners can access the Phishing Boat inventory
 
 Painting:
 As the planes, punch a dye against the hull, so the primary color will change
