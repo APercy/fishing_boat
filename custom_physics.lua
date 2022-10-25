@@ -1,7 +1,7 @@
 local min = math.min
 local abs = math.abs
 
-function phishing_boat.physics(self)
+function fishing_boat.physics(self)
     local friction = 0.996
 	local vel=self.object:get_velocity()
 		-- dumb friction

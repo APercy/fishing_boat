@@ -1,13 +1,13 @@
-phishing_boat.hud_list = {}
+fishing_boat.hud_list = {}
 
-function phishing_boat.get_pointer_angle(value, maxvalue)
+function fishing_boat.get_pointer_angle(value, maxvalue)
     local angle = value/maxvalue * 180
     --angle = angle - 90
     --angle = angle * -1
     return angle
 end
 
-function phishing_boat.animate_gauge(player, ids, prefix, x, y, angle)
+function fishing_boat.animate_gauge(player, ids, prefix, x, y, angle)
     local angle_in_rad = math.rad(angle + 180)
     local dim = 10
     local pos_x = math.sin(angle_in_rad) * dim
@@ -35,7 +35,7 @@ function phishing_boat.animate_gauge(player, ids, prefix, x, y, angle)
     player:hud_change(ids[prefix .. "7"], "offset", {x = pos_x + x, y = pos_y + y})
 end
 
-function phishing_boat.update_hud(player, coal, water, pressure, power_lever)
+function fishing_boat.update_hud(player, coal, water, pressure, power_lever)
     if player == nil then return end
     local player_name = player:get_player_name()
 
@@ -53,18 +53,18 @@ function phishing_boat.update_hud(player, coal, water, pressure, power_lever)
     local throttle_x = screen_pos_x + 395
     local throttle_y = screen_pos_y + 45
 
-    local ids = phishing_boat.hud_list[player_name]
+    local ids = fishing_boat.hud_list[player_name]
     if ids then
         local coal_value = coal
         if coal_value > 99 then coal_value = 99 end
         if coal_value < 0 then coal_value = 0 end
-        player:hud_change(ids["coal_1"], "text", "phishing_boat_"..(math.floor(coal_value/10))..".png")
-        player:hud_change(ids["coal_2"], "text", "phishing_boat_"..(math.floor(coal_value%10))..".png")
+        player:hud_change(ids["coal_1"], "text", "fishing_boat_"..(math.floor(coal_value/10))..".png")
+        player:hud_change(ids["coal_2"], "text", "fishing_boat_"..(math.floor(coal_value%10))..".png")
 
         player:hud_change(ids["throttle"], "offset", {x = throttle_x, y = throttle_y - power_lever})
 
-        phishing_boat.animate_gauge(player, ids, "water_pt_", water_gauge_x, water_gauge_y, water)
-        phishing_boat.animate_gauge(player, ids, "press_pt_", press_gauge_x, press_gauge_y, pressure)
+        fishing_boat.animate_gauge(player, ids, "water_pt_", water_gauge_x, water_gauge_y, water)
+        fishing_boat.animate_gauge(player, ids, "press_pt_", press_gauge_x, press_gauge_y, pressure)
     else
         ids = {}
 
@@ -82,7 +82,7 @@ function phishing_boat.update_hud(player, coal, water, pressure, power_lever)
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
             offset    = {x = screen_pos_x, y = screen_pos_y},
-            text      = "phishing_boat_hud_panel.png",
+            text      = "fishing_boat_hud_panel.png",
             scale     = { x = 0.5, y = 0.5},
             alignment = { x = 1, y = 0 },
         })
@@ -91,7 +91,7 @@ function phishing_boat.update_hud(player, coal, water, pressure, power_lever)
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
             offset    = {x = coal_1_x, y = coal_1_y},
-            text      = "phishing_boat_0.png",
+            text      = "fishing_boat_0.png",
             scale     = { x = 0.5, y = 0.5},
             alignment = { x = 1, y = 0 },
         })
@@ -100,7 +100,7 @@ function phishing_boat.update_hud(player, coal, water, pressure, power_lever)
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
             offset    = {x = coal_2_x, y = coal_2_y},
-            text      = "phishing_boat_0.png",
+            text      = "fishing_boat_0.png",
             scale     = { x = 0.5, y = 0.5},
             alignment = { x = 1, y = 0 },
         })
@@ -109,7 +109,7 @@ function phishing_boat.update_hud(player, coal, water, pressure, power_lever)
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
             offset    = {x = throttle_x, y = throttle_y},
-            text      = "phishing_boat_throttle.png",
+            text      = "fishing_boat_throttle.png",
             scale     = { x = 0.5, y = 0.5},
             alignment = { x = 1, y = 0 },
         })
@@ -118,7 +118,7 @@ function phishing_boat.update_hud(player, coal, water, pressure, power_lever)
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
             offset    = {x = water_gauge_x, y = water_gauge_y},
-            text      = "phishing_boat_ind_box.png",
+            text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
@@ -127,7 +127,7 @@ function phishing_boat.update_hud(player, coal, water, pressure, power_lever)
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
             offset    = {x = water_gauge_x, y = water_gauge_y},
-            text      = "phishing_boat_ind_box.png",
+            text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
@@ -135,7 +135,7 @@ function phishing_boat.update_hud(player, coal, water, pressure, power_lever)
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
             offset    = {x = water_gauge_x, y = water_gauge_y},
-            text      = "phishing_boat_ind_box.png",
+            text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
@@ -143,7 +143,7 @@ function phishing_boat.update_hud(player, coal, water, pressure, power_lever)
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
             offset    = {x = water_gauge_x, y = water_gauge_y},
-            text      = "phishing_boat_ind_box.png",
+            text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
@@ -151,7 +151,7 @@ function phishing_boat.update_hud(player, coal, water, pressure, power_lever)
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
             offset    = {x = water_gauge_x, y = water_gauge_y},
-            text      = "phishing_boat_ind_box.png",
+            text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
@@ -159,7 +159,7 @@ function phishing_boat.update_hud(player, coal, water, pressure, power_lever)
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
             offset    = {x = water_gauge_x, y = water_gauge_y},
-            text      = "phishing_boat_ind_box.png",
+            text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
@@ -167,7 +167,7 @@ function phishing_boat.update_hud(player, coal, water, pressure, power_lever)
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
             offset    = {x = water_gauge_x, y = water_gauge_y},
-            text      = "phishing_boat_ind_box.png",
+            text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
@@ -176,7 +176,7 @@ function phishing_boat.update_hud(player, coal, water, pressure, power_lever)
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
             offset    = {x = press_gauge_x, y = press_gauge_y},
-            text      = "phishing_boat_ind_box.png",
+            text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
@@ -184,7 +184,7 @@ function phishing_boat.update_hud(player, coal, water, pressure, power_lever)
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
             offset    = {x = press_gauge_x, y = press_gauge_y},
-            text      = "phishing_boat_ind_box.png",
+            text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
@@ -192,7 +192,7 @@ function phishing_boat.update_hud(player, coal, water, pressure, power_lever)
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
             offset    = {x = press_gauge_x, y = press_gauge_y},
-            text      = "phishing_boat_ind_box.png",
+            text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
@@ -200,7 +200,7 @@ function phishing_boat.update_hud(player, coal, water, pressure, power_lever)
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
             offset    = {x = press_gauge_x, y = press_gauge_y},
-            text      = "phishing_boat_ind_box.png",
+            text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
@@ -208,7 +208,7 @@ function phishing_boat.update_hud(player, coal, water, pressure, power_lever)
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
             offset    = {x = press_gauge_x, y = press_gauge_y},
-            text      = "phishing_boat_ind_box.png",
+            text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
@@ -216,7 +216,7 @@ function phishing_boat.update_hud(player, coal, water, pressure, power_lever)
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
             offset    = {x = press_gauge_x, y = press_gauge_y},
-            text      = "phishing_boat_ind_box.png",
+            text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
@@ -224,21 +224,21 @@ function phishing_boat.update_hud(player, coal, water, pressure, power_lever)
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
             offset    = {x = press_gauge_x, y = press_gauge_y},
-            text      = "phishing_boat_ind_box.png",
+            text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
 
-        phishing_boat.hud_list[player_name] = ids
+        fishing_boat.hud_list[player_name] = ids
     end
 end
 
 
-function phishing_boat.remove_hud(player)
+function fishing_boat.remove_hud(player)
     if player then
         local player_name = player:get_player_name()
         --minetest.chat_send_all(player_name)
-        local ids = phishing_boat.hud_list[player_name]
+        local ids = fishing_boat.hud_list[player_name]
         if ids then
             --player:hud_remove(ids["altitude"])
             --player:hud_remove(ids["time"])
@@ -262,7 +262,7 @@ function phishing_boat.remove_hud(player)
             player:hud_remove(ids["press_pt_2"])
             player:hud_remove(ids["press_pt_1"])
         end
-        phishing_boat.hud_list[player_name] = nil
+        fishing_boat.hud_list[player_name] = nil
     end
 
 end

@@ -1,4 +1,4 @@
-function phishing_boat.testDamage(self, velocity, position)
+function fishing_boat.testDamage(self, velocity, position)
     if self._last_accell == nil then return end
     local p = position --self.object:get_pos()
     local collision = false
@@ -15,7 +15,7 @@ function phishing_boat.testDamage(self, velocity, position)
             self.object:set_velocity(vector.add(velocity, vector.multiply(self._last_accell, self.dtime/8)))
         end
     end
-    local impact = math.abs(phishing_boat.get_hipotenuse_value(velocity, self._last_vel))
+    local impact = math.abs(fishing_boat.get_hipotenuse_value(velocity, self._last_vel))
     if impact > 2 then
         if self.colinfo then
             collision = self.colinfo.collides
@@ -26,7 +26,7 @@ function phishing_boat.testDamage(self, velocity, position)
     if collision then
         --self.object:set_velocity({x=0,y=0,z=0})
         local damage = impact -- / 2
-        minetest.sound_play("phishing_boat_collision", {
+        minetest.sound_play("fishing_boat_collision", {
             --to_player = self.driver_name,
             object = self.object,
             max_hear_distance = 15,
@@ -71,7 +71,7 @@ local function do_attach(self, player, slot)
     end
 end
 
-function phishing_boat.check_passenger_is_attached(self, name)
+function fishing_boat.check_passenger_is_attached(self, name)
     local is_attached = false
     if is_attached == false then
         for i = 5,1,-1 
@@ -86,7 +86,7 @@ function phishing_boat.check_passenger_is_attached(self, name)
 end
 
 --this method checks each 1 second for a disconected player who comes back
-function phishing_boat.rescueConnectionFailedPassengers(self)
+function fishing_boat.rescueConnectionFailedPassengers(self)
     self._disconnection_check_time = self._disconnection_check_time + self.dtime
     if self._disconnection_check_time > 1 then
         --minetest.chat_send_all(dump(self._passengers))
@@ -102,7 +102,7 @@ function phishing_boat.rescueConnectionFailedPassengers(self)
                             self._passengers[i] = nil --clear the slot first
                             do_attach(self, player, i) --attach
                         else
-                            --phishing_boat.dettachPlayer(self, player)
+                            --fishing_boat.dettachPlayer(self, player)
 		                end
                     end
                 end
@@ -112,7 +112,7 @@ function phishing_boat.rescueConnectionFailedPassengers(self)
 end
 
 -- attach passenger
-function phishing_boat.attach_pax(self, player, slot)
+function fishing_boat.attach_pax(self, player, slot)
     slot = slot or 0
 
     --verify if is locked to non-owners
@@ -161,18 +161,18 @@ function phishing_boat.attach_pax(self, player, slot)
     end
 end
 
-function phishing_boat.dettach_pax(self, player, side)
+function fishing_boat.dettach_pax(self, player, side)
     side = side or "r"
     if player then
         local name = player:get_player_name() --self._passenger
-        phishing_boat.remove_hud(player)
+        fishing_boat.remove_hud(player)
 
         -- passenger clicked the object => driver gets off the vehicle
         for i = 5,1,-1 
         do 
             if self._passengers[i] == name then
                 self._passengers[i] = nil
-                self._passengers_base_pos[i] = phishing_boat.copy_vector(phishing_boat.passenger_pos[i])
+                self._passengers_base_pos[i] = fishing_boat.copy_vector(fishing_boat.passenger_pos[i])
                 --break
             end
         end
@@ -204,17 +204,17 @@ function phishing_boat.dettach_pax(self, player, side)
     end
 end
 
-function phishing_boat.textures_copy()
+function fishing_boat.textures_copy()
     local tablecopy = {}
-    for k, v in pairs(phishing_boat.textures) do
+    for k, v in pairs(fishing_boat.textures) do
       tablecopy[k] = v
     end
     return tablecopy
 end
 
-function phishing_boat.set_logo(self, texture_name)
+function fishing_boat.set_logo(self, texture_name)
     if texture_name == "" or texture_name == nil then
-        self.logo = "phishing_boat_alpha_logo.png"
+        self.logo = "fishing_boat_alpha_logo.png"
     elseif texture_name then
         self.logo = texture_name
     end
@@ -222,7 +222,7 @@ function phishing_boat.set_logo(self, texture_name)
 end
 
 --painting
-function phishing_boat.paint(self, tex, colstr)
+function fishing_boat.paint(self, tex, colstr)
     if colstr then
         self.color = colstr
         local l_textures = self.initial_properties.textures
@@ -237,21 +237,21 @@ function phishing_boat.paint(self, tex, colstr)
 end
 
 --painting
-function phishing_boat.paint1(self, colstr)
+function fishing_boat.paint1(self, colstr)
     if colstr then
         self.color = colstr
-        phishing_boat.paint(self, "phishing_boat_painting1.png", colstr)
+        fishing_boat.paint(self, "fishing_boat_painting1.png", colstr)
     end
 end
-function phishing_boat.paint2(self, colstr)
+function fishing_boat.paint2(self, colstr)
     if colstr then
         self.color2 = colstr
-        phishing_boat.paint(self, "phishing_boat_painting2.png", colstr)
+        fishing_boat.paint(self, "fishing_boat_painting2.png", colstr)
     end
 end
 
 -- destroy the boat
-function phishing_boat.destroy(self, overload)
+function fishing_boat.destroy(self, overload)
     if self.sound_handle then
         minetest.sound_stop(self.sound_handle)
         self.sound_handle = nil
@@ -277,7 +277,7 @@ function phishing_boat.destroy(self, overload)
         minetest.add_item({x=pos.x+math.random()-0.5,y=pos.y,z=pos.z+math.random()-0.5},'default:mese_crystal')
     end]]--
 
-    --minetest.add_item({x=pos.x+math.random()-0.5,y=pos.y,z=pos.z+math.random()-0.5},'phishing_boat:boat')
+    --minetest.add_item({x=pos.x+math.random()-0.5,y=pos.y,z=pos.z+math.random()-0.5},'fishing_boat:boat')
     --minetest.add_item({x=pos.x+math.random()-0.5,y=pos.y,z=pos.z+math.random()-0.5},'default:diamond')
 
     --[[local total_biofuel = math.floor(self._energy) - 1
@@ -305,7 +305,7 @@ function phishing_boat.destroy(self, overload)
 end
 
 --returns 0 for old, 1 for new
-function phishing_boat.detect_player_api(player)
+function fishing_boat.detect_player_api(player)
     local player_proterties = player:get_properties()
     local mesh = "character.b3d"
     if player_proterties.mesh == mesh then
@@ -323,7 +323,7 @@ function phishing_boat.detect_player_api(player)
     return 0
 end
 
-function phishing_boat.checkAttach(self, player)
+function fishing_boat.checkAttach(self, player)
     local retVal = false
     if player then
         local player_attach = player:get_attach()
@@ -340,7 +340,7 @@ function phishing_boat.checkAttach(self, player)
     return retVal
 end
 
-function phishing_boat.clamp(value, min, max)
+function fishing_boat.clamp(value, min, max)
     local retVal = value
     if value < min then retVal = min end
     if value > max then retVal = max end
@@ -348,7 +348,7 @@ function phishing_boat.clamp(value, min, max)
     return retVal
 end
 
-function phishing_boat.reclamp(value, min, max)
+function fishing_boat.reclamp(value, min, max)
     local retVal = value
     local mid = (max-min)/2
     if value > min and value <= (min+mid) then retVal = min end
@@ -357,7 +357,7 @@ function phishing_boat.reclamp(value, min, max)
     return retVal
 end
 
-function phishing_boat.engineSoundPlay(self)
+function fishing_boat.engineSoundPlay(self)
     --sound
     if self.sound_handle then minetest.sound_stop(self.sound_handle) end
     if self.sound_handle_pistons then minetest.sound_stop(self.sound_handle_pistons) end
@@ -375,15 +375,15 @@ function phishing_boat.engineSoundPlay(self)
     end
 end
 
-function phishing_boat.engine_set_sound_and_animation(self)
+function fishing_boat.engine_set_sound_and_animation(self)
     if self._last_applied_power ~= self._power_lever then
         --minetest.chat_send_all('test2')
         self._last_applied_power = self._power_lever
-        self.object:set_animation_frame_speed(phishing_boat.iddle_rotation + (self._power_lever))
+        self.object:set_animation_frame_speed(fishing_boat.iddle_rotation + (self._power_lever))
         if self._last_sound_update == nil then self._last_sound_update = self._power_lever end
         if math.abs(self._last_sound_update - self._power_lever) > 5 then
             self._last_sound_update = self._power_lever
-            phishing_boat.engineSoundPlay(self)
+            fishing_boat.engineSoundPlay(self)
         end
     end
     if self._engine_running == false then
@@ -396,38 +396,38 @@ function phishing_boat.engine_set_sound_and_animation(self)
 end
 
 
-function phishing_boat.boat_deck_map(pos, dpos)
-    local orig_pos = phishing_boat.copy_vector(pos)
-    local position = phishing_boat.copy_vector(dpos)
-    local new_pos = phishing_boat.copy_vector(dpos)
-    new_pos.z = phishing_boat.clamp(new_pos.z, -29, 40)
+function fishing_boat.boat_deck_map(pos, dpos)
+    local orig_pos = fishing_boat.copy_vector(pos)
+    local position = fishing_boat.copy_vector(dpos)
+    local new_pos = fishing_boat.copy_vector(dpos)
+    new_pos.z = fishing_boat.clamp(new_pos.z, -29, 40)
     --minetest.chat_send_all(dump(new_pos))
     if position.z > -31 and position.z < -20 then --limit 10
         new_pos.y = 0
-        new_pos.x = phishing_boat.clamp(new_pos.x, -12, 12)
+        new_pos.x = fishing_boat.clamp(new_pos.x, -12, 12)
         return new_pos
     end
     if position.z > -20 and position.z < -14 then --limit 10
         new_pos.y = 0
-        new_pos.x = phishing_boat.clamp(new_pos.x, -14, 14)
+        new_pos.x = fishing_boat.clamp(new_pos.x, -14, 14)
         return new_pos
     end
     if position.z > -14 and position.z < -5 then --limit 10
         new_pos.y = 0
-        new_pos.x = phishing_boat.clamp(new_pos.x, -16, 16)
+        new_pos.x = fishing_boat.clamp(new_pos.x, -16, 16)
         return new_pos
     end
 
     if position.z > -5 and position.z < 10 then --limit 10
         new_pos.y = 0
-        new_pos.x = phishing_boat.clamp(new_pos.x, -14.5, 14.5)
+        new_pos.x = fishing_boat.clamp(new_pos.x, -14.5, 14.5)
         if position.z > -2 then
             if orig_pos.x <= -14.5 or orig_pos.x >= 14.5 then
                 -- X
-                new_pos.x = phishing_boat.reclamp(new_pos.x, -14.5, 14.5)
+                new_pos.x = fishing_boat.reclamp(new_pos.x, -14.5, 14.5)
             else
                 -- Z
-                new_pos.z = phishing_boat.reclamp(new_pos.z, -3, 10)
+                new_pos.z = fishing_boat.reclamp(new_pos.z, -3, 10)
             end
         end
         return new_pos
@@ -435,14 +435,14 @@ function phishing_boat.boat_deck_map(pos, dpos)
 
     if position.z > 10 and position.z <= 22 then --limit 11
         new_pos.y = 0
-        new_pos.x = phishing_boat.clamp(position.x, -15, 15)
+        new_pos.x = fishing_boat.clamp(position.x, -15, 15)
         if position.z < 21 then
             if orig_pos.x <= -14.5 or orig_pos.x >= 14.5 then
                 -- X
-                new_pos.x = phishing_boat.reclamp(new_pos.x, -14.5, 14.5)
+                new_pos.x = fishing_boat.reclamp(new_pos.x, -14.5, 14.5)
             else
                 -- Z
-                new_pos.z = phishing_boat.reclamp(new_pos.z, 10, 20)
+                new_pos.z = fishing_boat.reclamp(new_pos.z, 10, 20)
             end
         end
         return new_pos
@@ -450,24 +450,24 @@ function phishing_boat.boat_deck_map(pos, dpos)
 
     if position.z > 22 and position.z <= 30 then --limit 7
         new_pos.y = 0.0
-        new_pos.x = phishing_boat.clamp(new_pos.x, -13, 13)
+        new_pos.x = fishing_boat.clamp(new_pos.x, -13, 13)
         return new_pos
     end
     if position.z > 30 and position.z <= 36 then --limit 5
         new_pos.y = 3.0
-        new_pos.x = phishing_boat.clamp(new_pos.x, -10, 10)
+        new_pos.x = fishing_boat.clamp(new_pos.x, -10, 10)
         return new_pos
     end
     if position.z > 36 and position.z < 47 then --limit 1
         new_pos.y = 3.0
-        new_pos.x = phishing_boat.clamp(new_pos.x, -5, 5)
+        new_pos.x = fishing_boat.clamp(new_pos.x, -5, 5)
         return new_pos
     end
     return new_pos
 end
 
-function phishing_boat.play_rope_sound(self)
-    minetest.sound_play({name = "phishing_boat_rope"},
+function fishing_boat.play_rope_sound(self)
+    minetest.sound_play({name = "fishing_boat_rope"},
                 {object = self.object, gain = 1,
                     max_hear_distance = 5,
                     ephemeral = true,})
@@ -497,7 +497,7 @@ local function get_result_pos(self, player, index)
                 direction = direction + math.rad(90)
                 dir = 1
             end
-            local time_correction = (self.dtime/phishing_boat.ideal_step)
+            local time_correction = (self.dtime/fishing_boat.ideal_step)
             local move = 0.3 * dir * time_correction
             pos.x = move * math.cos(-direction)
             pos.z = move * math.sin(-direction)
@@ -526,11 +526,11 @@ local function get_result_pos(self, player, index)
     return pos
 end
 
-function phishing_boat.navigate_deck(pos, dpos, player)
+function fishing_boat.navigate_deck(pos, dpos, player)
     local pos_d = dpos
     if player then
         if pos.y <= 8.5 and pos.y >= 0 then
-            pos_d = phishing_boat.boat_deck_map(pos, dpos)
+            pos_d = fishing_boat.boat_deck_map(pos, dpos)
         end
 
         local ctrl = player:get_player_control()
@@ -544,7 +544,7 @@ function phishing_boat.navigate_deck(pos, dpos, player)
     return pos_d
 end
 
-function phishing_boat.move_persons(self)
+function fishing_boat.move_persons(self)
     --self._passenger = nil
     if self.object == nil then return end
     for i = 5,1,-1 
@@ -567,14 +567,14 @@ function phishing_boat.move_persons(self)
                     local y_rot = 0
                     if result_pos then
                         y_rot = result_pos.y -- the only field that returns a rotation
-                        local new_pos = phishing_boat.copy_vector(self._passengers_base_pos[i])
+                        local new_pos = fishing_boat.copy_vector(self._passengers_base_pos[i])
                         new_pos.x = new_pos.x - result_pos.z
                         new_pos.z = new_pos.z - result_pos.x
                         --minetest.chat_send_all(dump(new_pos))
-                        --local pos_d = phishing_boat.boat_lower_deck_map(self._passengers_base_pos[i], new_pos)
-                        local pos_d = phishing_boat.navigate_deck(self._passengers_base_pos[i], new_pos, player)
+                        --local pos_d = fishing_boat.boat_lower_deck_map(self._passengers_base_pos[i], new_pos)
+                        local pos_d = fishing_boat.navigate_deck(self._passengers_base_pos[i], new_pos, player)
                         --minetest.chat_send_all(dump(height))
-                        self._passengers_base_pos[i] = phishing_boat.copy_vector(pos_d)
+                        self._passengers_base_pos[i] = fishing_boat.copy_vector(pos_d)
                         self._passengers_base[i]:set_attach(self.object,'',self._passengers_base_pos[i],{x=0,y=0,z=0})
                     end
                     --minetest.chat_send_all(dump(self._passengers_base_pos[i]))
@@ -587,7 +587,7 @@ function phishing_boat.move_persons(self)
     end
 end
 
-function phishing_boat.copy_vector(original_vector)
+function fishing_boat.copy_vector(original_vector)
     local tablecopy = {}
     for k, v in pairs(original_vector) do
       tablecopy[k] = v

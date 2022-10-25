@@ -7,15 +7,15 @@ local LATER_DRAG_FACTOR = 2.0
 --
 -- seat pivot
 --
-minetest.register_entity('phishing_boat:stand_base',{
+minetest.register_entity('fishing_boat:stand_base',{
     initial_properties = {
 	    physical = true,
 	    collide_with_objects=true,
         collisionbox = {-2, -2, -2, 2, 0, 2},
 	    pointable=false,
 	    visual = "mesh",
-	    mesh = "phishing_boat_stand_base.b3d",
-        textures = {"phishing_boat_alpha.png",},
+	    mesh = "fishing_boat_stand_base.b3d",
+        textures = {"fishing_boat_alpha.png",},
 	},
     dist_moved = 0,
 	
@@ -30,7 +30,7 @@ minetest.register_entity('phishing_boat:stand_base',{
     end,
 })
 
-minetest.register_entity("phishing_boat:boat", {
+minetest.register_entity("fishing_boat:boat", {
     initial_properties = {
         physical = true,
         collide_with_objects = true, --true,
@@ -38,24 +38,24 @@ minetest.register_entity("phishing_boat:boat", {
         --selectionbox = {-0.6,0.6,-0.6, 0.6,1,0.6},
         visual = "mesh",
         --backface_culling = false,
-        mesh = "phishing_boat.b3d",
-        textures = phishing_boat.textures_copy(),
+        mesh = "fishing_boat.b3d",
+        textures = fishing_boat.textures_copy(),
     },
     textures = {},
     driver_name = nil,
     sound_handle = nil,
     static_save = true,
-    infotext = "A nice phishing boat",
+    infotext = "A nice Fishing boat",
     lastvelocity = vector.new(),
     hp = 50,
     color = "#0063b0",
     color2 = "#dc1818",
-    logo = "phishing_boat_alpha_logo.png",
+    logo = "fishing_boat_alpha_logo.png",
     timeout = 0;
     buoyancy = 0.24,
     max_hp = 50,
     anchored = false,
-    physics = phishing_boat.physics,
+    physics = fishing_boat.physics,
     hull_integrity = nil,
     owner = "",
     _shared_owners = {},
@@ -68,12 +68,12 @@ minetest.register_entity("phishing_boat:boat", {
     _energy = 1.0,--0.001,
     _passengers = {}, --passengers list
     _passengers_base = {}, --obj id
-    _passengers_base_pos = phishing_boat.copy_vector({}),
+    _passengers_base_pos = fishing_boat.copy_vector({}),
     _passengers_locked = false,
     _disconnection_check_time = 0,
     _inv = nil,
     _inv_id = "",
-    item = "phishing_boat:boat",
+    item = "fishing_boat:boat",
 
     get_staticdata = function(self) -- unloaded/unloads ... is now saved
         return minetest.serialize({
@@ -110,51 +110,51 @@ minetest.register_entity("phishing_boat:boat", {
             self.hp = data.stored_hp or 50
             self.color = data.stored_color or "blue"
             self.color2 = data.stored_color2 or "white"
-            self.logo = data.stored_logo or "phishing_boat_alpha_logo.png"
+            self.logo = data.stored_logo or "fishing_boat_alpha_logo.png"
             self.anchored = data.stored_anchor or false
             self.hull_integrity = data.stored_hull_integrity
             self.item = data.stored_item
             self._inv_id = data.stored_inv_id
-            self._passengers = data.stored_passengers or phishing_boat.copy_vector({[1]=nil, [2]=nil, [3]=nil, [4]=nil, [5]=nil,})
+            self._passengers = data.stored_passengers or fishing_boat.copy_vector({[1]=nil, [2]=nil, [3]=nil, [4]=nil, [5]=nil,})
             self._passengers_locked = data.stored_passengers_locked
             --minetest.debug("loaded: ", self._energy)
             local properties = self.object:get_properties()
-            properties.infotext = data.stored_owner .. " nice phishing boat"
+            properties.infotext = data.stored_owner .. " nice Fishing boat"
             self.object:set_properties(properties)
         end
 
-        local colstr = phishing_boat.colors[self.color]
+        local colstr = fishing_boat.colors[self.color]
         if not colstr then
             colstr = "blue"
             self.color = colstr
         end
-        phishing_boat.paint(self, self.color)
-        phishing_boat.paint2(self, self.color2)
+        fishing_boat.paint(self, self.color)
+        fishing_boat.paint2(self, self.color2)
         local pos = self.object:get_pos()
 
-        self._passengers_base = phishing_boat.copy_vector({[1]=nil, [2]=nil, [3]=nil, [4]=nil, [5]=nil,})
-        self._passengers_base_pos = phishing_boat.copy_vector({[1]=nil, [2]=nil, [3]=nil, [4]=nil, [5]=nil,})
+        self._passengers_base = fishing_boat.copy_vector({[1]=nil, [2]=nil, [3]=nil, [4]=nil, [5]=nil,})
+        self._passengers_base_pos = fishing_boat.copy_vector({[1]=nil, [2]=nil, [3]=nil, [4]=nil, [5]=nil,})
         self._passengers_base_pos = {
-                [1]=phishing_boat.copy_vector(phishing_boat.passenger_pos[1]),
-                [2]=phishing_boat.copy_vector(phishing_boat.passenger_pos[2]),
-                [3]=phishing_boat.copy_vector(phishing_boat.passenger_pos[3]),
-                [4]=phishing_boat.copy_vector(phishing_boat.passenger_pos[4]),
-                [5]=phishing_boat.copy_vector(phishing_boat.passenger_pos[5]),} --curr pos
+                [1]=fishing_boat.copy_vector(fishing_boat.passenger_pos[1]),
+                [2]=fishing_boat.copy_vector(fishing_boat.passenger_pos[2]),
+                [3]=fishing_boat.copy_vector(fishing_boat.passenger_pos[3]),
+                [4]=fishing_boat.copy_vector(fishing_boat.passenger_pos[4]),
+                [5]=fishing_boat.copy_vector(fishing_boat.passenger_pos[5]),} --curr pos
         --self._passengers = {[1]=nil, [2]=nil, [3]=nil, [4]=nil, [5]=nil,} --passenger names
 
-        self._passengers_base[1]=minetest.add_entity(pos,'phishing_boat:stand_base')
+        self._passengers_base[1]=minetest.add_entity(pos,'fishing_boat:stand_base')
         self._passengers_base[1]:set_attach(self.object,'',self._passengers_base_pos[1],{x=0,y=0,z=0})
 
-        self._passengers_base[2]=minetest.add_entity(pos,'phishing_boat:stand_base')
+        self._passengers_base[2]=minetest.add_entity(pos,'fishing_boat:stand_base')
         self._passengers_base[2]:set_attach(self.object,'',self._passengers_base_pos[2],{x=0,y=0,z=0})
 
-        self._passengers_base[3]=minetest.add_entity(pos,'phishing_boat:stand_base')
+        self._passengers_base[3]=minetest.add_entity(pos,'fishing_boat:stand_base')
         self._passengers_base[3]:set_attach(self.object,'',self._passengers_base_pos[3],{x=0,y=0,z=0})
 
-        self._passengers_base[4]=minetest.add_entity(pos,'phishing_boat:stand_base')
+        self._passengers_base[4]=minetest.add_entity(pos,'fishing_boat:stand_base')
         self._passengers_base[4]:set_attach(self.object,'',self._passengers_base_pos[4],{x=0,y=0,z=0})
 
-        self._passengers_base[5]=minetest.add_entity(pos,'phishing_boat:stand_base')
+        self._passengers_base[5]=minetest.add_entity(pos,'fishing_boat:stand_base')
         self._passengers_base[5]:set_attach(self.object,'',self._passengers_base_pos[5],{x=0,y=0,z=0})
 
         --animation load - stoped
@@ -170,11 +170,11 @@ minetest.register_entity("phishing_boat:boat", {
 
 		local inv = minetest.get_inventory({type = "detached", name = self._inv_id})
 
-        phishing_boat.engine_set_sound_and_animation(self)
+        fishing_boat.engine_set_sound_and_animation(self)
 
 		-- if the game was closed the inventories have to be made anew, instead of just reattached
 		if not inv then
-            airutils.create_inventory(self, phishing_boat.trunk_slots)
+            airutils.create_inventory(self, fishing_boat.trunk_slots)
 		else
 		    self.inv = inv
         end
@@ -221,13 +221,13 @@ minetest.register_entity("phishing_boat:boat", {
         local nhdir = {x=hull_direction.z,y=0,z=-hull_direction.x}        -- lateral unit vector
         local velocity = self.object:get_velocity()
 
-        local longit_speed = phishing_boat.dot(velocity,hull_direction)
+        local longit_speed = fishing_boat.dot(velocity,hull_direction)
         self._longit_speed = longit_speed --for anchor verify
         local longit_drag = vector.multiply(hull_direction,longit_speed*
-                longit_speed*LONGIT_DRAG_FACTOR*-1*phishing_boat.sign(longit_speed))
-        local later_speed = phishing_boat.dot(velocity,nhdir)
+                longit_speed*LONGIT_DRAG_FACTOR*-1*fishing_boat.sign(longit_speed))
+        local later_speed = fishing_boat.dot(velocity,nhdir)
         local later_drag = vector.multiply(nhdir,later_speed*later_speed*
-                LATER_DRAG_FACTOR*-1*phishing_boat.sign(later_speed))
+                LATER_DRAG_FACTOR*-1*fishing_boat.sign(later_speed))
         local accel = vector.add(longit_drag,later_drag)
 
         local vel = self.object:get_velocity()
@@ -246,23 +246,23 @@ minetest.register_entity("phishing_boat:boat", {
             player = minetest.get_player_by_name(self.driver_name)
             
             if player then
-                is_attached = phishing_boat.checkAttach(self, player)
+                is_attached = fishing_boat.checkAttach(self, player)
             end
         end
 
         if self.owner == "" then return end
 
         --detect collision
-        phishing_boat.testDamage(self, vel, curr_pos)
+        fishing_boat.testDamage(self, vel, curr_pos)
 
-        accel = phishing_boat.control(self, self.dtime, hull_direction, longit_speed, accel) or vel
+        accel = fishing_boat.control(self, self.dtime, hull_direction, longit_speed, accel) or vel
 
         --get disconnected players
-        phishing_boat.rescueConnectionFailedPassengers(self)
+        fishing_boat.rescueConnectionFailedPassengers(self)
 
         local turn_rate = math.rad(18)
         newyaw = yaw + self.dtime*(1 - 1 / (math.abs(longit_speed) + 1)) *
-            self._rudder_angle / 30 * turn_rate * phishing_boat.sign(longit_speed)
+            self._rudder_angle / 30 * turn_rate * fishing_boat.sign(longit_speed)
 
 
 
@@ -270,13 +270,13 @@ minetest.register_entity("phishing_boat:boat", {
         ---------------------------------
         local sdir = minetest.yaw_to_dir(newyaw)
         local snormal = {x=sdir.z,y=0,z=-sdir.x}    -- rightside, dot is negative
-        local prsr = phishing_boat.dot(snormal,nhdir)
+        local prsr = fishing_boat.dot(snormal,nhdir)
         local rollfactor = -15
         local newroll = 0
         if self._last_roll ~= nil then newroll = self._last_roll end
         --oscilation when stoped
         if longit_speed == 0 then
-            local time_correction = (self.dtime/phishing_boat.ideal_step)
+            local time_correction = (self.dtime/fishing_boat.ideal_step)
             --stoped
             if self._roll_state == nil then
                 self._roll_state = math.floor(math.random(-1,1))
@@ -286,11 +286,11 @@ minetest.register_entity("phishing_boat:boat", {
             local max_roll_bob = 2
             if math.deg(newroll) >= max_roll_bob and self._roll_state == 1 then
                 self._roll_state = -1
-                phishing_boat.play_rope_sound(self);
+                fishing_boat.play_rope_sound(self);
             end
             if math.deg(newroll) <= -max_roll_bob and self._roll_state == -1 then
                 self._roll_state = 1
-                phishing_boat.play_rope_sound(self);
+                fishing_boat.play_rope_sound(self);
             end
             local roll_factor = (self._roll_state * 0.01) * time_correction
             self._last_roll = self._last_roll + math.rad(roll_factor)
@@ -300,7 +300,7 @@ minetest.register_entity("phishing_boat:boat", {
             newroll = (prsr*math.rad(rollfactor))*later_speed
             if self._last_roll ~= nil then 
                 if math.sign(newroll) ~= math.sign(self._last_roll) then
-                    phishing_boat.play_rope_sound(self)
+                    fishing_boat.play_rope_sound(self)
                 end
             end
             self._last_roll = newroll
@@ -313,7 +313,7 @@ minetest.register_entity("phishing_boat:boat", {
         newpitch = velocity.y * math.rad(1.5)
 
         --lets do some bob and set acceleration
-		local bob = phishing_boat.minmax(phishing_boat.dot(accel,hull_direction),0.5)	-- vertical bobbing
+		local bob = fishing_boat.minmax(fishing_boat.dot(accel,hull_direction),0.5)	-- vertical bobbing
 		if self.isinliquid then
             if self._last_rnd == nil then self._last_rnd = math.random(1, 3) end
             if self._last_water_touch == nil then self._last_water_touch = self._last_rnd end
@@ -339,7 +339,7 @@ minetest.register_entity("phishing_boat:boat", {
             self.object:set_acceleration(accel)
 		end
 
-        phishing_boat.engine_set_sound_and_animation(self)
+        fishing_boat.engine_set_sound_and_animation(self)
 
         --time for rotations
         self.object:set_rotation({x=newpitch,y=newyaw,z=newroll})
@@ -356,7 +356,7 @@ minetest.register_entity("phishing_boat:boat", {
         self._last_vel = self.object:get_velocity()
         self._last_accell = accel
 
-        phishing_boat.move_persons(self)
+        fishing_boat.move_persons(self)
     end,
 
     on_punch = function(self, puncher, ttime, toolcaps, dir, damage)
@@ -378,7 +378,7 @@ minetest.register_entity("phishing_boat:boat", {
             return
         end
         
-        local is_attached = phishing_boat.checkAttach(self, puncher)
+        local is_attached = fishing_boat.checkAttach(self, puncher)
 
         local itmstck=puncher:get_wielded_item()
         local item_name = ""
@@ -386,7 +386,7 @@ minetest.register_entity("phishing_boat:boat", {
 
         if is_attached == true then
             --refuel
-            phishing_boat.load_fuel(self, puncher)
+            fishing_boat.load_fuel(self, puncher)
         end
 
         -- deal with painting or destroying
@@ -396,14 +396,14 @@ minetest.register_entity("phishing_boat:boat", {
 
                 --lets paint!!!!
                 local color = item_name:sub(indx+1)
-                local colstr = phishing_boat.colors[color]
+                local colstr = fishing_boat.colors[color]
                 --minetest.chat_send_all(color ..' '.. dump(colstr))
                 if colstr and (name == self.owner or minetest.check_player_privs(puncher, {protection_bypass=true})) then
                     local ctrl = puncher:get_player_control()
                     if ctrl.aux1 then
-                        phishing_boat.paint2(self, colstr)
+                        fishing_boat.paint2(self, colstr)
                     else
-                        phishing_boat.paint1(self, colstr)
+                        fishing_boat.paint1(self, colstr)
                     end
                     itmstck:set_count(itmstck:get_count()-1)
                     puncher:set_wielded_item(itmstck)
@@ -416,7 +416,7 @@ minetest.register_entity("phishing_boat:boat", {
         if is_attached == false then
             local i = 0
             local has_passengers = false
-            for i = phishing_boat.max_seats,1,-1 
+            for i = fishing_boat.max_seats,1,-1 
             do 
                 if self._passengers[i] ~= nil then
                     has_passengers = true
@@ -440,7 +440,7 @@ minetest.register_entity("phishing_boat:boat", {
             end
 
             if self.hp <= 0 then
-                phishing_boat.destroy(self, false)
+                fishing_boat.destroy(self, false)
             end
 
         end
@@ -476,7 +476,7 @@ minetest.register_entity("phishing_boat:boat", {
 
         --check error after being shot for any other mod
         if is_attached == false then
-            for i = phishing_boat.max_seats,1,-1 
+            for i = fishing_boat.max_seats,1,-1 
             do 
                 if self._passengers[i] == name then
                     self._passengers[i] = nil --clear the wrong information
@@ -488,7 +488,7 @@ minetest.register_entity("phishing_boat:boat", {
         --shows pilot formspec
         if name == self.driver_name then
             if is_attached then
-                phishing_boat.pilot_formspec(name)
+                fishing_boat.pilot_formspec(name)
             else
                 self.driver_name = nil
             end
@@ -496,7 +496,7 @@ minetest.register_entity("phishing_boat:boat", {
         --  attach passenger
         --=========================
         else
-            local pass_is_attached = phishing_boat.check_passenger_is_attached(self, name)
+            local pass_is_attached = fishing_boat.check_passenger_is_attached(self, name)
 
             if pass_is_attached then
                 local can_bypass = minetest.check_player_privs(clicker, {protection_bypass=true})
@@ -510,16 +510,16 @@ minetest.register_entity("phishing_boat:boat", {
                         end
                     end
                     if is_shared then
-                        airutils.show_vehicle_trunk_formspec(self, clicker, phishing_boat.trunk_slots)
+                        airutils.show_vehicle_trunk_formspec(self, clicker, fishing_boat.trunk_slots)
                     end
                 else
                     if self.driver_name ~= nil and self.driver_name ~= "" then
                         --lets take the control by force
                         if name == self.owner or can_bypass then
                             --require the pilot position now
-                            phishing_boat.owner_formspec(name)
+                            fishing_boat.owner_formspec(name)
                         else
-                            phishing_boat.pax_formspec(name)
+                            fishing_boat.pax_formspec(name)
                         end
                     else
                         --check if is on owner list
@@ -533,17 +533,17 @@ minetest.register_entity("phishing_boat:boat", {
                         end
                         --normal user
                         if is_shared == false then
-                            phishing_boat.pax_formspec(name)
+                            fishing_boat.pax_formspec(name)
                         else
                             --owners
-                            phishing_boat.pilot_formspec(name)
+                            fishing_boat.pilot_formspec(name)
                         end
                     end
                 end
             else
                 --first lets clean the boat slots
                 --note that when it happens, the "rescue" function will lost the historic
-                for i = phishing_boat.max_seats,1,-1 
+                for i = fishing_boat.max_seats,1,-1 
                 do 
                     if self._passengers[i] ~= nil then
                         local old_player = minetest.get_player_by_name(self._passengers[i])
@@ -552,7 +552,7 @@ minetest.register_entity("phishing_boat:boat", {
                 end
                 --attach normal passenger
                 --if self._door_closed == false then
-                    phishing_boat.attach_pax(self, clicker)
+                    fishing_boat.attach_pax(self, clicker)
                 --end
             end
         end

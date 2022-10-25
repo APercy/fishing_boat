@@ -2,7 +2,7 @@
 -- Manual --
 --------------
 
-function phishing_boat.manual_formspec(name)
+function fishing_boat.manual_formspec(name)
     local basic_form = table.concat({
         "formspec_version[3]",
         "size[6,6]"
@@ -12,11 +12,11 @@ function phishing_boat.manual_formspec(name)
 	basic_form = basic_form.."button[1,2.5;4,1;fuel;Refueling]"
 	basic_form = basic_form.."button[1,4.0;4,1;share;Sharing]"
 
-    minetest.show_formspec(name, "phishing_boat:manual_main", basic_form)
+    minetest.show_formspec(name, "fishing_boat:manual_main", basic_form)
 end
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
-	if formname == "phishing_boat:manual_main" then
+	if formname == "fishing_boat:manual_main" then
         local formspec_color = "#44444466"
 		if fields.short then
 			local text = {
@@ -38,7 +38,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                 "bgcolor["..formspec_color..";false]",
 				"label[1.0,2.0;", table.concat(text, ""), "]",
 			}, "")
-			minetest.show_formspec(player:get_player_name(), "phishing_boat:manual_shortcut", shortcut_form)
+			minetest.show_formspec(player:get_player_name(), "fishing_boat:manual_shortcut", shortcut_form)
 		end
 		if fields.fuel then
 			local text = {
@@ -56,17 +56,17 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                 "bgcolor["..formspec_color..";false]",
 				"label[1.0,2.0;", table.concat(text, ""), "]",
 			}, "")
-			minetest.show_formspec(player:get_player_name(), "phishing_boat:fuel", fuel_form)
+			minetest.show_formspec(player:get_player_name(), "fishing_boat:fuel", fuel_form)
 		end
 		if fields.share then
 			local text = {
 				"Sharing \n\n",
                 "This vehicle was made to be shared with a team. So the owner can set more users to  \n",
-                "operate it. Inside the boat, just use the command \""..core.colorize('#ffff00', "/phishing_boat_share <name>").."\" \n",
-                "To remove someone from the sharing, \""..core.colorize('#ffff00', "/phishing_boat_remove <name>").."\" \n",
-                "To list the owners, \""..core.colorize('#ffff00', "/phishing_boat_list").."\" \n",
-                "Is possible to lock the boat access, so only the owners can enter: \""..core.colorize('#ffff00', "/phishing_boat_lock true").."\" \n",
-                "To let anyone enter, \""..core.colorize('#ffff00', "/phishing_boat_lock false").."\" \n",
+                "operate it. Inside the boat, just use the command \""..core.colorize('#ffff00', "/fishing_boat_share <name>").."\" \n",
+                "To remove someone from the sharing, \""..core.colorize('#ffff00', "/fishing_boat_remove <name>").."\" \n",
+                "To list the owners, \""..core.colorize('#ffff00', "/fishing_boat_list").."\" \n",
+                "Is possible to lock the boat access, so only the owners can enter: \""..core.colorize('#ffff00', "/fishing_boat_lock true").."\" \n",
+                "To let anyone enter, \""..core.colorize('#ffff00', "/fishing_boat_lock false").."\" \n",
                 "All shared owners can access the boat inventory"
 			}
 			local tips_form = table.concat({
@@ -76,15 +76,15 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                 "bgcolor["..formspec_color..";false]",
 				"label[1,2;", table.concat(text, ""), "]",
 			}, "")
-			minetest.show_formspec(player:get_player_name(), "phishing_boat:share", tips_form)
+			minetest.show_formspec(player:get_player_name(), "fishing_boat:share", tips_form)
 		end
 	end
 end)
 
-minetest.register_chatcommand("phishing_boat_manual", {
+minetest.register_chatcommand("fishing_boat_manual", {
 	params = "",
 	description = "Boat manual",
 	func = function(name, param)
-        phishing_boat.manual_formspec(name)
+        fishing_boat.manual_formspec(name)
 	end
 })

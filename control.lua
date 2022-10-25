@@ -1,8 +1,8 @@
 --global constants
 
-phishing_boat.vector_up = vector.new(0, 1, 0)
+fishing_boat.vector_up = vector.new(0, 1, 0)
 
-function phishing_boat.check_node_below(obj)
+function fishing_boat.check_node_below(obj)
 	local pos_below = obj:get_pos()
 	pos_below.y = pos_below.y - 0.1
 	local node_below = minetest.get_node(pos_below).name
@@ -13,10 +13,10 @@ function phishing_boat.check_node_below(obj)
 	return touching_ground, liquid_below
 end
 
-function phishing_boat.powerAdjust(self,dtime,factor,dir,max_power)
+function fishing_boat.powerAdjust(self,dtime,factor,dir,max_power)
     local max = max_power or 100
     local add_factor = factor/2
-    add_factor = add_factor * (dtime/phishing_boat.ideal_step) --adjusting the command speed by dtime
+    add_factor = add_factor * (dtime/fishing_boat.ideal_step) --adjusting the command speed by dtime
     local power_index = self._power_lever
 
     if dir == 1 then
@@ -33,7 +33,7 @@ function phishing_boat.powerAdjust(self,dtime,factor,dir,max_power)
     end
 end
 
-function phishing_boat.control(self, dtime, hull_direction, longit_speed, accel)
+function fishing_boat.control(self, dtime, hull_direction, longit_speed, accel)
     if self._last_time_command == nil then self._last_time_command = 0 end
     self._last_time_command = self._last_time_command + dtime
     if self._last_time_command > 1 then self._last_time_command = 1 end
@@ -55,12 +55,12 @@ function phishing_boat.control(self, dtime, hull_direction, longit_speed, accel)
             if self._power_lever >= 82 then can_acc = false end
             if ctrl.aux1 then can_acc = true end
             if can_acc then
-                phishing_boat.powerAdjust(self, dtime, factor, 1)
+                fishing_boat.powerAdjust(self, dtime, factor, 1)
             end
         elseif ctrl.down then
-            phishing_boat.powerAdjust(self, dtime, factor, -1)
+            fishing_boat.powerAdjust(self, dtime, factor, -1)
         else
-            --self.object:set_animation_frame_speed(phishing_boat.iddle_rotation)
+            --self.object:set_animation_frame_speed(fishing_boat.iddle_rotation)
         end
 
         if not ctrl.aux1 and self._power_lever < 0 then self._power_lever = 0 end
@@ -86,7 +86,7 @@ function phishing_boat.control(self, dtime, hull_direction, longit_speed, accel)
     --engine acceleration calc
     local engineacc = 0
     if self._engine_running then
-        engineacc = (self._power_lever * phishing_boat.max_engine_acc) / 100;
+        engineacc = (self._power_lever * fishing_boat.max_engine_acc) / 100;
     end
 
     --do not exceed
@@ -107,20 +107,20 @@ function phishing_boat.control(self, dtime, hull_direction, longit_speed, accel)
         if ctrl then
             if ctrl.right or ctrl.left then
             else
-                phishing_boat.rudder_auto_correction(self, longit_speed, dtime)
+                fishing_boat.rudder_auto_correction(self, longit_speed, dtime)
             end
         else
-            phishing_boat.rudder_auto_correction(self, longit_speed, dtime)
+            fishing_boat.rudder_auto_correction(self, longit_speed, dtime)
         end
     end
 
     return retval_accel
 end
 
-function phishing_boat.rudder_auto_correction(self, longit_speed, dtime)
+function fishing_boat.rudder_auto_correction(self, longit_speed, dtime)
     local factor = 1
     if self._rudder_angle > 0 then factor = -1 end
-    local correction = (phishing_boat.rudder_limit*(longit_speed/2000)) * factor * (dtime/phishing_boat.ideal_step)
+    local correction = (fishing_boat.rudder_limit*(longit_speed/2000)) * factor * (dtime/fishing_boat.ideal_step)
     local before_correction = self._rudder_angle
     local new_rudder_angle = self._rudder_angle + correction
     if math.sign(before_correction) ~= math.sign(new_rudder_angle) then

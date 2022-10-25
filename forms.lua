@@ -3,7 +3,7 @@
 -- Manual --
 --------------
 
-function phishing_boat.getPlaneFromPlayer(player)
+function fishing_boat.getPlaneFromPlayer(player)
     local seat = player:get_attach()
     if seat then
         local plane = seat:get_attach()
@@ -12,14 +12,14 @@ function phishing_boat.getPlaneFromPlayer(player)
     return nil
 end
 
-function phishing_boat.pilot_formspec(name)
+function fishing_boat.pilot_formspec(name)
     local basic_form = table.concat({
         "formspec_version[5]",
         "size[6,8]",
 	}, "")
 
     local player = minetest.get_player_by_name(name)
-    local plane_obj = phishing_boat.getPlaneFromPlayer(player)
+    local plane_obj = fishing_boat.getPlaneFromPlayer(player)
     if plane_obj == nil then
         return
     end
@@ -41,10 +41,10 @@ function phishing_boat.pilot_formspec(name)
     basic_form = basic_form.."button[1,6.2;2,1;disembark_l;<< Left]"
     basic_form = basic_form.."button[3,6.2;2,1;disembark_r;Right >>]"
 
-    minetest.show_formspec(name, "phishing_boat:pilot_main", basic_form)
+    minetest.show_formspec(name, "fishing_boat:pilot_main", basic_form)
 end
 
-function phishing_boat.pax_formspec(name)
+function fishing_boat.pax_formspec(name)
     local basic_form = table.concat({
         "formspec_version[3]",
         "size[6,3]",
@@ -54,10 +54,10 @@ function phishing_boat.pax_formspec(name)
     basic_form = basic_form.."button[1,1.2;2,1;disembark_l;<< Left]"
     basic_form = basic_form.."button[3,1.2;2,1;disembark_r;Right >>]"
 
-    minetest.show_formspec(name, "phishing_boat:passenger_main", basic_form)
+    minetest.show_formspec(name, "fishing_boat:passenger_main", basic_form)
 end
 
-function phishing_boat.owner_formspec(name)
+function fishing_boat.owner_formspec(name)
     local basic_form = table.concat({
         "formspec_version[3]",
         "size[6,4.2]",
@@ -68,82 +68,82 @@ function phishing_boat.owner_formspec(name)
     basic_form = basic_form.."button[1,2.4;2,1;disembark_l;<< Left]"
     basic_form = basic_form.."button[3,2.4;2,1;disembark_r;Right >>]"
 
-    minetest.show_formspec(name, "phishing_boat:owner_main", basic_form)
+    minetest.show_formspec(name, "fishing_boat:owner_main", basic_form)
 end
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
-    if formname == "phishing_boat:owner_main" then
+    if formname == "fishing_boat:owner_main" then
         local name = player:get_player_name()
-        local plane_obj = phishing_boat.getPlaneFromPlayer(player)
+        local plane_obj = fishing_boat.getPlaneFromPlayer(player)
         if plane_obj == nil then
-            minetest.close_formspec(name, "phishing_boat:owner_main")
+            minetest.close_formspec(name, "fishing_boat:owner_main")
             return
         end
         local ent = plane_obj:get_luaentity()
         if ent then
 		    if fields.disembark_l then
-                phishing_boat.dettach_pax(ent, player, "l")
+                fishing_boat.dettach_pax(ent, player, "l")
 		    end
 		    if fields.disembark_r then
-                phishing_boat.dettach_pax(ent, player, "r")
+                fishing_boat.dettach_pax(ent, player, "r")
 		    end
 		    if fields.take then
                 ent._at_control = true
                 for i = 5,1,-1 
                 do 
                     if ent._passengers[i] == name then
-                        ent._passengers_base_pos[i] = vector.new(phishing_boat.pilot_base_pos)
-                        ent._passengers_base[i]:set_attach(ent.object,'',phishing_boat.pilot_base_pos,{x=0,y=0,z=0})
+                        ent._passengers_base_pos[i] = vector.new(fishing_boat.pilot_base_pos)
+                        ent._passengers_base[i]:set_attach(ent.object,'',fishing_boat.pilot_base_pos,{x=0,y=0,z=0})
                         player:set_attach(ent._passengers_base[i], "", {x = 0, y = 0, z = 0}, {x = 0, y = 0, z = 0})
                     end
                     if ent._passengers[i] == ent.driver_name then
-                        ent._passengers_base_pos[i] = vector.new(phishing_boat.passenger_pos[i])
+                        ent._passengers_base_pos[i] = vector.new(fishing_boat.passenger_pos[i])
                         ent._passengers_base[i]:set_attach(ent.object,'',ent._passengers_base_pos[i],{x=0,y=0,z=0})
                     end
                 end
                 ent.driver_name = name
 		    end
         end
-        minetest.close_formspec(name, "phishing_boat:owner_main")
+        minetest.close_formspec(name, "fishing_boat:owner_main")
     end
-	if formname == "phishing_boat:passenger_main" then
+	if formname == "fishing_boat:passenger_main" then
         local name = player:get_player_name()
-        local plane_obj = phishing_boat.getPlaneFromPlayer(player)
+        local plane_obj = fishing_boat.getPlaneFromPlayer(player)
         if plane_obj == nil then
-            minetest.close_formspec(name, "phishing_boat:passenger_main")
+            minetest.close_formspec(name, "fishing_boat:passenger_main")
             return
         end
         local ent = plane_obj:get_luaentity()
         if ent then
 		    if fields.disembark_l then
-                phishing_boat.dettach_pax(ent, player, "l")
+                fishing_boat.dettach_pax(ent, player, "l")
 		    end
 		    if fields.disembark_r then
-                phishing_boat.dettach_pax(ent, player, "r")
+                fishing_boat.dettach_pax(ent, player, "r")
 		    end
         end
-        minetest.close_formspec(name, "phishing_boat:passenger_main")
+        minetest.close_formspec(name, "fishing_boat:passenger_main")
 	end
-    if formname == "phishing_boat:logo_main" then
+    if formname == "fishing_boat:logo_main" then
         local name = player:get_player_name()
-        local plane_obj = phishing_boat.getPlaneFromPlayer(player)
+        local plane_obj = fishing_boat.getPlaneFromPlayer(player)
         if plane_obj == nil then
-            minetest.close_formspec(name, "phishing_boat:logo_main")
+            minetest.close_formspec(name, "fishing_boat:logo_main")
             return
         end
         local ent = plane_obj:get_luaentity()
         if ent then
 		    if fields.logo or fields.set_logo then
-                phishing_boat.set_logo(ent, fields.logo)
+                fishing_boat.set_logo(ent, fields.logo)
 		    end
         end
-        minetest.close_formspec(name, "phishing_boat:logo_main")
+        minetest.close_formspec(name, "fishing_boat:logo_main")
     end
-    if formname == "phishing_boat:pilot_main" then
+    if formname == "fishing_boat:pilot_main" then
         local name = player:get_player_name()
-        local plane_obj = phishing_boat.getPlaneFromPlayer(player)
+        local plane_obj = fishing_boat.getPlaneFromPlayer(player)
         if plane_obj == nil then
-            minetest.close_formspec(name, "phishing_boat:pilot_main")
+            minetest.close_formspec(name, "fishing_boat:pilot_main")
             return
         end
         local ent = plane_obj:get_luaentity()
@@ -157,7 +157,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		    end
             
             if fields.manual then
-                phishing_boat.manual_formspec(name)
+                fishing_boat.manual_formspec(name)
             end
 		    if fields.take_control then
                 if fields.take_control == "true" then
@@ -166,8 +166,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                         for i = 5,1,-1 
                         do 
                             if ent._passengers[i] == name then
-                                ent._passengers_base_pos[i] = vector.new(phishing_boat.pilot_base_pos)
-                                ent._passengers_base[i]:set_attach(ent.object,'',phishing_boat.pilot_base_pos,{x=0,y=0,z=0})
+                                ent._passengers_base_pos[i] = vector.new(fishing_boat.pilot_base_pos)
+                                ent._passengers_base[i]:set_attach(ent.object,'',fishing_boat.pilot_base_pos,{x=0,y=0,z=0})
                                 player:set_attach(ent._passengers_base[i], "", {x = 0, y = 0, z = 0}, {x = 0, y = 0, z = 0})
                                 ent.driver_name = name
                                 --minetest.chat_send_all(">>"..ent.driver_name)
@@ -180,13 +180,13 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                 else
                     ent.driver_name = nil
                     ent._at_control = false
-                    phishing_boat.remove_hud(player)
+                    fishing_boat.remove_hud(player)
 
                     for i = 5,1,-1 
                     do 
                         if ent._passengers[i] == name then
-                            --ent._passengers_base_pos[i] = phishing_boat.copy_vector(phishing_boat.passenger_pos[i])
-                            ent._passengers_base_pos[i] = vector.new(phishing_boat.passenger_pos[i])
+                            --ent._passengers_base_pos[i] = fishing_boat.copy_vector(fishing_boat.passenger_pos[i])
+                            ent._passengers_base_pos[i] = vector.new(fishing_boat.passenger_pos[i])
                             ent._passengers_base[i]:set_attach(ent.object,'',ent._passengers_base_pos[i],{x=0,y=0,z=0})
                             break
                         end
@@ -202,7 +202,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                 ent.driver_name = nil
                 ent._at_control = false
 
-                phishing_boat.dettach_pax(ent, player, "l")
+                fishing_boat.dettach_pax(ent, player, "l")
 
 		    end
 		    if fields.disembark_r then
@@ -213,7 +213,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                 ent.driver_name = nil
                 ent._at_control = false
 
-                phishing_boat.dettach_pax(ent, player, "r")
+                fishing_boat.dettach_pax(ent, player, "r")
 
 		    end
 		    if fields.bring then
@@ -247,12 +247,12 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                 --ent._rudder_angle = 0
             end
         end
-        minetest.close_formspec(name, "phishing_boat:pilot_main")
+        minetest.close_formspec(name, "fishing_boat:pilot_main")
     end
 end)
 
 
-minetest.register_chatcommand("phishing_boat_share", {
+minetest.register_chatcommand("fishing_boat_share", {
 	params = "name",
 	description = "Share ownewrship with your friends",
 	privs = {interact = true},
@@ -266,7 +266,7 @@ minetest.register_chatcommand("phishing_boat_share", {
             if seat ~= nil then
                 local entity = seat:get_luaentity()
                 if entity then
-                    if entity.name == "phishing_boat:boat" then
+                    if entity.name == "fishing_boat:boat" then
                         if entity.owner == name then
                             local exists = false
                             for k, v in pairs(entity._shared_owners) do
@@ -296,7 +296,7 @@ minetest.register_chatcommand("phishing_boat_share", {
 	end
 })
 
-minetest.register_chatcommand("phishing_boat_remove", {
+minetest.register_chatcommand("fishing_boat_remove", {
 	params = "name",
 	description = "Removes ownewrship from someone",
 	privs = {interact = true},
@@ -309,7 +309,7 @@ minetest.register_chatcommand("phishing_boat_remove", {
             if seat ~= nil then
                 local entity = seat:get_luaentity()
                 if entity then
-                    if entity.name == "phishing_boat:boat" then
+                    if entity.name == "fishing_boat:boat" then
                         if entity.owner == name then
                             for k, v in pairs(entity._shared_owners) do
                                 if v == param then
@@ -333,7 +333,7 @@ minetest.register_chatcommand("phishing_boat_remove", {
 	end
 })
 
-minetest.register_chatcommand("phishing_boat_list", {
+minetest.register_chatcommand("fishing_boat_list", {
 	params = "",
 	description = "Lists the boat shared owners",
 	privs = {interact = true},
@@ -346,7 +346,7 @@ minetest.register_chatcommand("phishing_boat_list", {
             if seat ~= nil then
                 local entity = seat:get_luaentity()
                 if entity then
-                    if entity.name == "phishing_boat:boat" then
+                    if entity.name == "fishing_boat:boat" then
                         minetest.chat_send_player(name,core.colorize('#ffff00', " >>> Current owners are:"))
                         minetest.chat_send_player(name,core.colorize('#0000ff', entity.owner))
                         for k, v in pairs(entity._shared_owners) do
@@ -364,7 +364,7 @@ minetest.register_chatcommand("phishing_boat_list", {
 	end
 })
 
-minetest.register_chatcommand("phishing_boat_lock", {
+minetest.register_chatcommand("fishing_boat_lock", {
 	params = "true/false",
 	description = "Blocks boarding of non-owners. true to lock, false to unlock",
 	privs = {interact = true},
@@ -377,7 +377,7 @@ minetest.register_chatcommand("phishing_boat_lock", {
             if seat ~= nil then
                 local entity = seat:get_luaentity()
                 if entity then
-                    if entity.name == "phishing_boat:boat" then
+                    if entity.name == "fishing_boat:boat" then
                         if param == "true" then
                             entity._passengers_locked = true
                             minetest.chat_send_player(name,core.colorize('#ffff00', " >>> Non owners cannot enter now."))
@@ -396,7 +396,7 @@ minetest.register_chatcommand("phishing_boat_lock", {
 	end
 })
 
-minetest.register_chatcommand("phishing_boat_eject", {
+minetest.register_chatcommand("fishing_boat_eject", {
 	params = "",
 	description = "Ejects from the boat - useful for clients before 5.3",
 	privs = {interact = true},
@@ -410,11 +410,11 @@ minetest.register_chatcommand("phishing_boat_eject", {
             if seat ~= nil then
                 local entity = seat:get_luaentity()
                 if entity then
-                    if entity.name == "phishing_boat:boat" then
+                    if entity.name == "fishing_boat:boat" then
                         for i = 5,1,-1 
                         do 
                             if entity._passengers[i] == name then
-                                phishing_boat.dettach_pax(entity, player, "l")
+                                fishing_boat.dettach_pax(entity, player, "l")
                                 break
                             end
                         end
