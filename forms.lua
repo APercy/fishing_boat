@@ -30,8 +30,8 @@ function fishing_boat.pilot_formspec(name)
     local anchor = "false"
     if ent.anchored == true then anchor = "true" end
 
-	basic_form = basic_form.."button[1,1.0;4,1;turn_on;Start/Stop the fire]"
-    basic_form = basic_form.."button[1,2.0;4,1;water;Load water from bellow]"
+	basic_form = basic_form.."button[1,1.0;4,1;turn_on;Start/Stop the engine]"
+    basic_form = basic_form.."button[1,2.0;4,1;inventory;Open inventory]"
     basic_form = basic_form.."button[1,3.0;4,1;manual;Show Manual Menu]"
 
     basic_form = basic_form.."checkbox[1,4.6;take_control;Take the Control;"..take_control.."]"
@@ -124,21 +124,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
         end
         minetest.close_formspec(name, "fishing_boat:passenger_main")
 	end
-    if formname == "fishing_boat:logo_main" then
-        local name = player:get_player_name()
-        local plane_obj = fishing_boat.getPlaneFromPlayer(player)
-        if plane_obj == nil then
-            minetest.close_formspec(name, "fishing_boat:logo_main")
-            return
-        end
-        local ent = plane_obj:get_luaentity()
-        if ent then
-		    if fields.logo or fields.set_logo then
-                fishing_boat.set_logo(ent, fields.logo)
-		    end
-        end
-        minetest.close_formspec(name, "fishing_boat:logo_main")
-    end
     if formname == "fishing_boat:pilot_main" then
         local name = player:get_player_name()
         local plane_obj = fishing_boat.getPlaneFromPlayer(player)
@@ -155,7 +140,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                     ent._engine_running = true
                 end
 		    end
-            
+            if fields.inventory then
+                airutils.show_vehicle_trunk_formspec(ent, player, fishing_boat.trunk_slots)
+            end
             if fields.manual then
                 fishing_boat.manual_formspec(name)
             end
