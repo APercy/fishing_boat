@@ -69,6 +69,7 @@ fishing_boat.colors ={
     yellow='#ffe400',
 }
 
+dofile(minetest.get_modpath("fishing_boat") .. DIR_DELIM .. "walk_map.lua")
 dofile(minetest.get_modpath("fishing_boat") .. DIR_DELIM .. "utilities.lua")
 dofile(minetest.get_modpath("fishing_boat") .. DIR_DELIM .. "control.lua")
 dofile(minetest.get_modpath("fishing_boat") .. DIR_DELIM .. "fuel_management.lua")

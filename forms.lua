@@ -182,7 +182,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                     ent._at_control = false
                     fishing_boat.remove_hud(player)
 
-                    for i = 5,1,-1 
+                    --[[for i = 5,1,-1 
                     do 
                         if ent._passengers[i] == name then
                             --ent._passengers_base_pos[i] = fishing_boat.copy_vector(fishing_boat.passenger_pos[i])
@@ -190,7 +190,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                             ent._passengers_base[i]:set_attach(ent.object,'',ent._passengers_base_pos[i],{x=0,y=0,z=0})
                             break
                         end
-                    end
+                    end]]--
 
                 end
 		    end
