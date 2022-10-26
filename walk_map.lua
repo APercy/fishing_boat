@@ -41,10 +41,10 @@ function fishing_boat.boat_deck_map(pos, dpos)
 
         --test back cabin collision
         limit = 14.5
-        if position.x > -limit and position.x < limit and position.z > -7 then
+        if position.x > -limit and position.x <= limit and position.z > -8 then
             new_pos.y = 0
-            if orig_pos.x < 1 or orig_pos.x > 13.5 then
-                new_pos.z = fishing_boat.clamp(new_pos.z, -14, -7)
+            if orig_pos.x < 1 or orig_pos.x > 8 then
+                new_pos.z = fishing_boat.clamp(new_pos.z, -14, -8)
             end
         end
 
