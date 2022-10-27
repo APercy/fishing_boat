@@ -58,6 +58,7 @@ minetest.register_entity("fishing_boat:boat", {
     physics = fishing_boat.physics,
     hull_integrity = nil,
     owner = "",
+    _last_time_command = 0,
     _shared_owners = {},
     _engine_running = false,
     _power_lever = 0,
@@ -247,6 +248,18 @@ minetest.register_entity("fishing_boat:boat", {
             
             if player then
                 is_attached = fishing_boat.checkAttach(self, player)
+            end
+
+            if is_attached then
+        		local ctrl = player:get_player_control()
+	            if ctrl.jump then
+                    --sets the engine running - but sets a delay also, cause keypress
+                    if self._last_time_command > 2.0 then
+                        self._last_time_command = 0.0
+                        minetest.sound_play({name = "fishing_boat_horn"},
+	                            {object = self.object, gain = 0.6, pitch = 1.0, max_hear_distance = 32, loop = false,})
+                    end
+	            end
             end
         end
 

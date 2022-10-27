@@ -36,7 +36,7 @@ end
 function fishing_boat.control(self, dtime, hull_direction, longit_speed, accel)
     if self._last_time_command == nil then self._last_time_command = 0 end
     self._last_time_command = self._last_time_command + dtime
-    if self._last_time_command > 1 then self._last_time_command = 1 end
+    if self._last_time_command > 3 then self._last_time_command = 3 end
 	local player = nil
     if self.driver_name then
         player = minetest.get_player_by_name(self.driver_name)
