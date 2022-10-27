@@ -35,36 +35,30 @@ function fishing_boat.animate_gauge(player, ids, prefix, x, y, angle)
     player:hud_change(ids[prefix .. "7"], "offset", {x = pos_x + x, y = pos_y + y})
 end
 
-function fishing_boat.update_hud(player, coal, water, pressure, power_lever)
+function fishing_boat.update_hud(self, player)
     if player == nil then return end
     local player_name = player:get_player_name()
 
     local screen_pos_y = -100
     local screen_pos_x = 10
 
-    local water_gauge_x = screen_pos_x + 374
-    local water_gauge_y = screen_pos_y
-    local press_gauge_x = screen_pos_x + 85
-    local press_gauge_y = water_gauge_y
-    local coal_1_x = screen_pos_x + 182
-    local coal_1_y = screen_pos_y
-    local coal_2_x = coal_1_x + 60
-    local coal_2_y = screen_pos_y
+    local power_gauge_x = screen_pos_x + 374
+    local power_gauge_y = screen_pos_y
+    local fuel_gauge_x = screen_pos_x + 266
+    local fuel_gauge_y = power_gauge_y
     local throttle_x = screen_pos_x + 395
     local throttle_y = screen_pos_y + 45
 
     local ids = fishing_boat.hud_list[player_name]
     if ids then
-        local coal_value = coal
-        if coal_value > 99 then coal_value = 99 end
-        if coal_value < 0 then coal_value = 0 end
-        player:hud_change(ids["coal_1"], "text", "fishing_boat_"..(math.floor(coal_value/10))..".png")
-        player:hud_change(ids["coal_2"], "text", "fishing_boat_"..(math.floor(coal_value%10))..".png")
+        player:hud_change(ids["throttle"], "offset", {x = throttle_x, y = throttle_y - self._power_lever})
 
-        player:hud_change(ids["throttle"], "offset", {x = throttle_x, y = throttle_y - power_lever})
+        local power  = fishing_boat.get_pointer_angle(self._energy, 100 )
+        local fuel = fishing_boat.get_pointer_angle(self._energy, fishing_boat.MAX_FUEL )
 
-        fishing_boat.animate_gauge(player, ids, "water_pt_", water_gauge_x, water_gauge_y, water)
-        fishing_boat.animate_gauge(player, ids, "press_pt_", press_gauge_x, press_gauge_y, pressure)
+
+        fishing_boat.animate_gauge(player, ids, "power_pt_", power_gauge_x, power_gauge_y, 150-(self._power_lever*1.5))
+        fishing_boat.animate_gauge(player, ids, "fuel_pt_", fuel_gauge_x, fuel_gauge_y, 180-fuel)
     else
         ids = {}
 
@@ -87,24 +81,6 @@ function fishing_boat.update_hud(player, coal, water, pressure, power_lever)
             alignment = { x = 1, y = 0 },
         })
 
-        ids["coal_1"] = player:hud_add({
-            hud_elem_type = "image",
-            position  = {x = 0, y = 1},
-            offset    = {x = coal_1_x, y = coal_1_y},
-            text      = "fishing_boat_0.png",
-            scale     = { x = 0.5, y = 0.5},
-            alignment = { x = 1, y = 0 },
-        })
-
-        ids["coal_2"] = player:hud_add({
-            hud_elem_type = "image",
-            position  = {x = 0, y = 1},
-            offset    = {x = coal_2_x, y = coal_2_y},
-            text      = "fishing_boat_0.png",
-            scale     = { x = 0.5, y = 0.5},
-            alignment = { x = 1, y = 0 },
-        })
-        
         ids["throttle"] = player:hud_add({
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
@@ -114,116 +90,116 @@ function fishing_boat.update_hud(player, coal, water, pressure, power_lever)
             alignment = { x = 1, y = 0 },
         })
 
-        ids["water_pt_1"] = player:hud_add({
+        ids["power_pt_1"] = player:hud_add({
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
-            offset    = {x = water_gauge_x, y = water_gauge_y},
+            offset    = {x = power_gauge_x, y = power_gauge_y},
             text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
 
-        ids["water_pt_2"] = player:hud_add({
+        ids["power_pt_2"] = player:hud_add({
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
-            offset    = {x = water_gauge_x, y = water_gauge_y},
+            offset    = {x = power_gauge_x, y = power_gauge_y},
             text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
-        ids["water_pt_3"] = player:hud_add({
+        ids["power_pt_3"] = player:hud_add({
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
-            offset    = {x = water_gauge_x, y = water_gauge_y},
+            offset    = {x = power_gauge_x, y = power_gauge_y},
             text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
-        ids["water_pt_4"] = player:hud_add({
+        ids["power_pt_4"] = player:hud_add({
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
-            offset    = {x = water_gauge_x, y = water_gauge_y},
+            offset    = {x = power_gauge_x, y = power_gauge_y},
             text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
-        ids["water_pt_5"] = player:hud_add({
+        ids["power_pt_5"] = player:hud_add({
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
-            offset    = {x = water_gauge_x, y = water_gauge_y},
+            offset    = {x = power_gauge_x, y = power_gauge_y},
             text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
-        ids["water_pt_6"] = player:hud_add({
+        ids["power_pt_6"] = player:hud_add({
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
-            offset    = {x = water_gauge_x, y = water_gauge_y},
+            offset    = {x = power_gauge_x, y = power_gauge_y},
             text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
-        ids["water_pt_7"] = player:hud_add({
+        ids["power_pt_7"] = player:hud_add({
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
-            offset    = {x = water_gauge_x, y = water_gauge_y},
+            offset    = {x = power_gauge_x, y = power_gauge_y},
             text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
 
-        ids["press_pt_1"] = player:hud_add({
+        ids["fuel_pt_1"] = player:hud_add({
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
-            offset    = {x = press_gauge_x, y = press_gauge_y},
+            offset    = {x = fuel_gauge_x, y = fuel_gauge_y},
             text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
-        ids["press_pt_2"] = player:hud_add({
+        ids["fuel_pt_2"] = player:hud_add({
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
-            offset    = {x = press_gauge_x, y = press_gauge_y},
+            offset    = {x = fuel_gauge_x, y = fuel_gauge_y},
             text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
-        ids["press_pt_3"] = player:hud_add({
+        ids["fuel_pt_3"] = player:hud_add({
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
-            offset    = {x = press_gauge_x, y = press_gauge_y},
+            offset    = {x = fuel_gauge_x, y = fuel_gauge_y},
             text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
-        ids["press_pt_4"] = player:hud_add({
+        ids["fuel_pt_4"] = player:hud_add({
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
-            offset    = {x = press_gauge_x, y = press_gauge_y},
+            offset    = {x = fuel_gauge_x, y = fuel_gauge_y},
             text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
-        ids["press_pt_5"] = player:hud_add({
+        ids["fuel_pt_5"] = player:hud_add({
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
-            offset    = {x = press_gauge_x, y = press_gauge_y},
+            offset    = {x = fuel_gauge_x, y = fuel_gauge_y},
             text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
-        ids["press_pt_6"] = player:hud_add({
+        ids["fuel_pt_6"] = player:hud_add({
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
-            offset    = {x = press_gauge_x, y = press_gauge_y},
+            offset    = {x = fuel_gauge_x, y = fuel_gauge_y},
             text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
         })
-        ids["press_pt_7"] = player:hud_add({
+        ids["fuel_pt_7"] = player:hud_add({
             hud_elem_type = "image",
             position  = {x = 0, y = 1},
-            offset    = {x = press_gauge_x, y = press_gauge_y},
+            offset    = {x = fuel_gauge_x, y = fuel_gauge_y},
             text      = "fishing_boat_ind_box.png",
             scale     = { x = 6, y = 6},
             alignment = { x = 1, y = 0 },
@@ -244,23 +220,21 @@ function fishing_boat.remove_hud(player)
             --player:hud_remove(ids["time"])
             player:hud_remove(ids["title"])
             player:hud_remove(ids["bg"])
-            player:hud_remove(ids["coal_1"])
-            player:hud_remove(ids["coal_2"])
             player:hud_remove(ids["throttle"])
-            player:hud_remove(ids["water_pt_7"])
-            player:hud_remove(ids["water_pt_6"])
-            player:hud_remove(ids["water_pt_5"])
-            player:hud_remove(ids["water_pt_4"])
-            player:hud_remove(ids["water_pt_3"])
-            player:hud_remove(ids["water_pt_2"])
-            player:hud_remove(ids["water_pt_1"])
-            player:hud_remove(ids["press_pt_7"])
-            player:hud_remove(ids["press_pt_6"])
-            player:hud_remove(ids["press_pt_5"])
-            player:hud_remove(ids["press_pt_4"])
-            player:hud_remove(ids["press_pt_3"])
-            player:hud_remove(ids["press_pt_2"])
-            player:hud_remove(ids["press_pt_1"])
+            player:hud_remove(ids["power_pt_7"])
+            player:hud_remove(ids["power_pt_6"])
+            player:hud_remove(ids["power_pt_5"])
+            player:hud_remove(ids["power_pt_4"])
+            player:hud_remove(ids["power_pt_3"])
+            player:hud_remove(ids["power_pt_2"])
+            player:hud_remove(ids["power_pt_1"])
+            player:hud_remove(ids["fuel_pt_7"])
+            player:hud_remove(ids["fuel_pt_6"])
+            player:hud_remove(ids["fuel_pt_5"])
+            player:hud_remove(ids["fuel_pt_4"])
+            player:hud_remove(ids["fuel_pt_3"])
+            player:hud_remove(ids["fuel_pt_2"])
+            player:hud_remove(ids["fuel_pt_1"])
         end
         fishing_boat.hud_list[player_name] = nil
     end

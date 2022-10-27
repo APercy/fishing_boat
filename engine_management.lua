@@ -28,10 +28,10 @@ function fishing_boat.engine_set_sound_and_animation(self)
 
         -- calculate energy consumption --
         ----------------------------------
-        if self._energy > 0 and self._last_accell then
+        if self._energy > 0 then
             local zero_reference = vector.new()
-            local acceleration = fishing_boat.get_hipotenuse_value(self._last_accell, zero_reference)
-            local consumed_power = acceleration/6000
+            local acceleration = math.abs(self._power_lever)/1500
+            local consumed_power = acceleration/fishing_boat.FUEL_CONSUMPTION
             self._energy = self._energy - consumed_power;
         end
         if self._energy <= 0 and self._engine_running then
@@ -50,6 +50,16 @@ function fishing_boat.engine_set_sound_and_animation(self)
         self._power_lever = 0
         self.object:set_animation_frame_speed(0)
     end
+
+
+    if self.driver_name then
+        local player = minetest.get_player_by_name(self.driver_name)
+
+        --minetest.chat_send_all(self._power_lever)
+        fishing_boat.update_hud(self, player)
+    end
+
+
 end
 
 
