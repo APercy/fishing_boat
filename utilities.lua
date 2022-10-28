@@ -224,7 +224,7 @@ end
 --painting
 function fishing_boat.paint(self, tex, colstr)
     if colstr then
-        self.color = colstr
+        --self.color = colstr
         local l_textures = self.initial_properties.textures
         for _, texture in ipairs(l_textures) do
             local indx = texture:find(tex)

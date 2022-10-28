@@ -109,8 +109,8 @@ minetest.register_entity("fishing_boat:boat", {
             self.owner = data.stored_owner or ""
             self._shared_owners = data.stored_shared_owners or {}
             self.hp = data.stored_hp or 50
-            self.color = data.stored_color or "blue"
-            self.color2 = data.stored_color2 or "white"
+            self.color = data.stored_color
+            self.color2 = data.stored_color2
             self.logo = data.stored_logo or "fishing_boat_alpha_logo.png"
             self.anchored = data.stored_anchor or false
             self.hull_integrity = data.stored_hull_integrity
@@ -124,13 +124,10 @@ minetest.register_entity("fishing_boat:boat", {
             self.object:set_properties(properties)
         end
 
-        local colstr = fishing_boat.colors[self.color]
-        if not colstr then
-            colstr = "blue"
-            self.color = colstr
-        end
+
         fishing_boat.paint(self, self.color)
         fishing_boat.paint2(self, self.color2)
+
         local pos = self.object:get_pos()
 
         self._passengers_base = fishing_boat.copy_vector({[1]=nil, [2]=nil, [3]=nil, [4]=nil, [5]=nil,})
