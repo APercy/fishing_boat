@@ -221,32 +221,44 @@ function fishing_boat.set_logo(self, texture_name)
     --paint(self)
 end
 
---painting
-function fishing_boat.paint(self, tex, colstr)
-    if colstr then
-        --self.color = colstr
-        local l_textures = self.initial_properties.textures
-        for _, texture in ipairs(l_textures) do
-            local indx = texture:find(tex)
-            if indx then
-                l_textures[_] = tex.."^[multiply:".. colstr
-            end
-        end
-	    self.object:set_properties({textures=l_textures})
+function fishing_boat.textures_copy()
+    local tablecopy = {}
+    for k, v in pairs(fishing_boat.textures) do
+      tablecopy[k] = v
     end
+    return tablecopy
+end
+
+--painting
+function fishing_boat.paint(self)
+    --self.color = colstr
+    local l_textures = fishing_boat.textures_copy() --self.initial_properties.textures
+    for _, texture in ipairs(l_textures) do
+        local tex = "fishing_boat_painting1.png"
+        local indx = texture:find(tex)
+        if indx then
+            l_textures[_] = tex.."^[multiply:".. self.color
+        end
+        tex = "fishing_boat_painting2.png"
+        indx = texture:find(tex)
+        if indx then
+            l_textures[_] = tex.."^[multiply:".. self.color2
+        end
+    end
+    self.object:set_properties({textures=l_textures})
 end
 
 --painting
 function fishing_boat.paint1(self, colstr)
     if colstr then
         self.color = colstr
-        fishing_boat.paint(self, "fishing_boat_painting1.png", colstr)
+        fishing_boat.paint(self)
     end
 end
 function fishing_boat.paint2(self, colstr)
     if colstr then
         self.color2 = colstr
-        fishing_boat.paint(self, "fishing_boat_painting2.png", colstr)
+        fishing_boat.paint(self)
     end
 end
 

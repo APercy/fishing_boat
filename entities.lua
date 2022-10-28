@@ -125,8 +125,7 @@ minetest.register_entity("fishing_boat:boat", {
         end
 
 
-        fishing_boat.paint(self, self.color)
-        fishing_boat.paint2(self, self.color2)
+        fishing_boat.paint(self)
 
         local pos = self.object:get_pos()
 
