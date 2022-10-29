@@ -15,7 +15,7 @@ end
 function fishing_boat.pilot_formspec(name)
     local basic_form = table.concat({
         "formspec_version[5]",
-        "size[6,8]",
+        "size[6,8.8]",
 	}, "")
 
     local player = minetest.get_player_by_name(name)
@@ -29,6 +29,8 @@ function fishing_boat.pilot_formspec(name)
     if ent._at_control then take_control = "true" end
     local anchor = "false"
     if ent.anchored == true then anchor = "true" end
+    local light = "false"
+    if ent._show_light == true then light = "true" end
 
 	basic_form = basic_form.."button[1,1.0;4,1;turn_on;Start/Stop the engine]"
     basic_form = basic_form.."button[1,2.0;4,1;inventory;Open inventory]"
@@ -36,10 +38,11 @@ function fishing_boat.pilot_formspec(name)
 
     basic_form = basic_form.."checkbox[1,4.6;take_control;Take the Control;"..take_control.."]"
     basic_form = basic_form.."checkbox[1,5.2;anchor;Anchor away;"..anchor.."]"
+    basic_form = basic_form.."checkbox[1,5.8;light;Light;"..light.."]"
     
-    basic_form = basic_form.."label[1,6.0;Disembark:]"
-    basic_form = basic_form.."button[1,6.2;2,1;disembark_l;<< Left]"
-    basic_form = basic_form.."button[3,6.2;2,1;disembark_r;Right >>]"
+    basic_form = basic_form.."label[1,6.6;Disembark:]"
+    basic_form = basic_form.."button[1,6.8;2,1;disembark_l;<< Left]"
+    basic_form = basic_form.."button[3,6.8;2,1;disembark_r;Right >>]"
 
     minetest.show_formspec(name, "fishing_boat:pilot_main", basic_form)
 end
@@ -232,6 +235,13 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                     end
                 end
                 --ent._rudder_angle = 0
+            end
+            if fields.light then
+                if fields.light == "true" then
+                    ent._show_light = true
+                else
+                    ent._show_light = false
+                end
             end
         end
         minetest.close_formspec(name, "fishing_boat:pilot_main")

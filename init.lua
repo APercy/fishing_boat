@@ -34,8 +34,6 @@ fishing_boat.textures = {
             "fishing_boat_black.png", --leme
             "fishing_boat_compass.png", -- bussola
             "default_junglewood.png", --mastro
-            fishing_boat.metal_texture, --lente lanterna
-            "fishing_boat_black.png", --corpo lanterna
             fishing_boat.metal_texture, --cornetas
             "fishing_boat_helice.png", --helice
             "fishing_boat_painting1.png^[multiply:#0063b0", --bordas casco
@@ -71,6 +69,7 @@ fishing_boat.colors ={
 
 dofile(minetest.get_modpath("fishing_boat") .. DIR_DELIM .. "walk_map.lua")
 dofile(minetest.get_modpath("fishing_boat") .. DIR_DELIM .. "utilities.lua")
+dofile(minetest.get_modpath("fishing_boat") .. DIR_DELIM .. "light.lua")
 dofile(minetest.get_modpath("fishing_boat") .. DIR_DELIM .. "control.lua")
 dofile(minetest.get_modpath("fishing_boat") .. DIR_DELIM .. "fuel_management.lua")
 dofile(minetest.get_modpath("fishing_boat") .. DIR_DELIM .. "engine_management.lua")

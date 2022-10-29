@@ -30,6 +30,29 @@ minetest.register_entity('fishing_boat:stand_base',{
     end,
 })
 
+minetest.register_entity('fishing_boat:light',{
+initial_properties = {
+	physical = false,
+	collide_with_objects=false,
+	pointable=false,
+    glow = 0,
+	visual = "mesh",
+	mesh = "fishing_boat_light.b3d",
+    textures = {"fishing_boat_light_off.png","fishing_boat_black.png",},
+	},
+
+    on_activate = function(self,std)
+	    self.sdata = minetest.deserialize(std) or {}
+	    if self.sdata.remove then self.object:remove() end
+    end,
+	    
+    get_staticdata=function(self)
+      self.sdata.remove=true
+      return minetest.serialize(self.sdata)
+    end,
+	
+})
+
 minetest.register_entity("fishing_boat:boat", {
     initial_properties = {
         physical = true,
@@ -74,7 +97,8 @@ minetest.register_entity("fishing_boat:boat", {
     _disconnection_check_time = 0,
     _inv = nil,
     _inv_id = "",
-    item = "fishing_boat:boat",
+    _show_light = false,
+    _light_old_pos = nil,
 
     get_staticdata = function(self) -- unloaded/unloads ... is now saved
         return minetest.serialize({
@@ -87,17 +111,17 @@ minetest.register_entity("fishing_boat:boat", {
             stored_color2 = self.color2,
             stored_anchor = self.anchored,
             stored_hull_integrity = self.hull_integrity,
-            stored_item = self.item,
             stored_inv_id = self._inv_id,
             stored_passengers = self._passengers, --passengers list
             stored_passengers_locked = self._passengers_locked,
+            stored_light_old_pos = self._light_old_pos,
+            stored_show_light = self._show_light,
         })
     end,
 
 	on_deactivate = function(self)
         airutils.save_inventory(self)
         if self.sound_handle then minetest.sound_stop(self.sound_handle) end
-        if self.sound_handle_pistons then minetest.sound_stop(self.sound_handle_pistons) end
 	end,
 
     on_activate = function(self, staticdata, dtime_s)
@@ -114,10 +138,11 @@ minetest.register_entity("fishing_boat:boat", {
             self.logo = data.stored_logo or "fishing_boat_alpha_logo.png"
             self.anchored = data.stored_anchor or false
             self.hull_integrity = data.stored_hull_integrity
-            self.item = data.stored_item
             self._inv_id = data.stored_inv_id
             self._passengers = data.stored_passengers or fishing_boat.copy_vector({[1]=nil, [2]=nil, [3]=nil, [4]=nil, [5]=nil,})
             self._passengers_locked = data.stored_passengers_locked
+            self._light_old_pos = data.stored_light_old_pos
+            self._show_light = data.stored_show_light
             --minetest.debug("loaded: ", self._energy)
             local properties = self.object:get_properties()
             properties.infotext = data.stored_owner .. " nice Fishing boat"
@@ -128,6 +153,8 @@ minetest.register_entity("fishing_boat:boat", {
         fishing_boat.paint(self)
 
         local pos = self.object:get_pos()
+        self._light = minetest.add_entity(pos,'fishing_boat:light')
+        self._light:set_attach(self.object,'',self._passengers_base_pos[1],{x=0,y=0,z=0})
 
         self._passengers_base = fishing_boat.copy_vector({[1]=nil, [2]=nil, [3]=nil, [4]=nil, [5]=nil,})
         self._passengers_base_pos = fishing_boat.copy_vector({[1]=nil, [2]=nil, [3]=nil, [4]=nil, [5]=nil,})
@@ -366,6 +393,24 @@ minetest.register_entity("fishing_boat:boat", {
         self._last_accell = accel
 
         fishing_boat.move_persons(self)
+
+        --lets work on light now
+        if self._last_light_move == nil then self._last_light_move = 0 end
+        self._last_light_move = self._last_light_move + self.dtime
+        if self._last_light_move > 0.15 then
+            self._last_light_move = 0
+            if self._show_light == true then
+                --self.lights:set_properties({is_visible=true})
+                fishing_boat.put_light(self)
+                self._light:set_properties({textures={"fishing_boat_light_on.png","fishing_boat_black.png",}, glow=32})
+            else
+                --self.lights:set_properties({is_visible=false})
+                fishing_boat.remove_light(self)
+                self._light:set_properties({textures={"fishing_boat_light_off.png","fishing_boat_black.png",}, glow=0})
+            end
+        end
+
+
     end,
 
     on_punch = function(self, puncher, ttime, toolcaps, dir, damage)

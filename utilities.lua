@@ -269,8 +269,10 @@ function fishing_boat.destroy(self, overload)
         self.sound_handle = nil
     end
 
+    fishing_boat.remove_light(self)
+
     local pos = self.object:get_pos()
-    if self.fire then self.fire:remove() end
+    if self._light then self._light:remove() end
     if self._passengers_base[1] then self._passengers_base[1]:remove() end
     if self._passengers_base[2] then self._passengers_base[2]:remove() end
     if self._passengers_base[3] then self._passengers_base[3]:remove() end
