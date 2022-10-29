@@ -23,6 +23,7 @@ To list the owners, /fishing_boat_list
 Is possible to lock the boat access, so only the owners can enter: /fishing_boat_lock true
 To let anyone enter, /fishing_boat_lock false
 All shared owners can access the boat inventory
+When the ship sunk, all permissions are ignored and anybody can gat the boat treasures
 
 Painting:
 As the planes, punch a dye against the hull, so the primary color will change
