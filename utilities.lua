@@ -283,39 +283,16 @@ function fishing_boat.destroy(self, overload)
     self.object:remove()
 
     pos.y=pos.y+2
-    --[[for i=1,7 do
+    for i=1,8 do
+        minetest.add_item({x=pos.x+math.random()-0.5,y=pos.y,z=pos.z+math.random()-0.5},'default:wood')
+        minetest.add_item({x=pos.x+math.random()-0.5,y=pos.y,z=pos.z+math.random()-0.5},'default:mese_crystal')
+    end
+
+    for i=1,4 do
         minetest.add_item({x=pos.x+math.random()-0.5,y=pos.y,z=pos.z+math.random()-0.5},'default:steel_ingot')
     end
 
-    for i=1,7 do
-        minetest.add_item({x=pos.x+math.random()-0.5,y=pos.y,z=pos.z+math.random()-0.5},'default:mese_crystal')
-    end]]--
-
-    --minetest.add_item({x=pos.x+math.random()-0.5,y=pos.y,z=pos.z+math.random()-0.5},'fishing_boat:boat')
-    --minetest.add_item({x=pos.x+math.random()-0.5,y=pos.y,z=pos.z+math.random()-0.5},'default:diamond')
-
-    --[[local total_biofuel = math.floor(self._energy) - 1
-    for i=0,total_biofuel do
-        minetest.add_item({x=pos.x+math.random()-0.5,y=pos.y,z=pos.z+math.random()-0.5},'biofuel:biofuel')
-    end]]--
-    if overload then
-        local stack = ItemStack(self.item)
-        local item_def = stack:get_definition()
-        
-        if item_def.overload_drop then
-            for _,item in pairs(item_def.overload_drop) do
-                minetest.add_item({x=pos.x+math.random()-0.5,y=pos.y,z=pos.z+math.random()-0.5},item)
-            end
-            return
-        end
-    end
-    local stack = ItemStack(self.item)
-    local item_def = stack:get_definition()
-    if self.hull_integrity then
-        local boat_wear = math.floor(65535*(1-(self.hull_integrity/item_def.hull_integrity)))
-        stack:set_wear(boat_wear)
-    end
-    minetest.add_item({x=pos.x+math.random()-0.5,y=pos.y,z=pos.z+math.random()-0.5}, stack)
+    --minetest.add_item({x=pos.x+math.random()-0.5,y=pos.y,z=pos.z+math.random()-0.5}, "fishing_boat:boat")
 end
 
 --returns 0 for old, 1 for new

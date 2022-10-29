@@ -159,7 +159,38 @@ minetest.register_craftitem("fishing_boat:boat", {
 --
 
 if not minetest.settings:get_bool('fishing_boat.disable_craftitems') then
+    -- engine
+    minetest.register_craftitem("fishing_boat:hull",{
+	    description = "Boat hull",
+	    inventory_image = "phishing_boat_hull_icon.png",
+    })
+    -- hull
+    minetest.register_craftitem("fishing_boat:cabin",{
+	    description = "Boat cabin",
+	    inventory_image = "phishing_boat_cabin_icon.png",
+    })
 
-
+	minetest.register_craft({
+		output = "fishing_boat:hull",
+		recipe = {
+			{"group:wood",          "group:wood",          "group:wood"},
+			{"group:wood",          "group:wood",          "default:mese_block"},
+			{"default:steel_ingot", "default:steel_ingot", "default:steel_ingot"},
+		}
+	})
+	minetest.register_craft({
+		output = "fishing_boat:cabin",
+		recipe = {
+			{"default:steel_ingot", "default:steel_ingot", "default:steel_ingot"},
+			{"default:glass",       "default:glass",       "group:wood"},
+			{"default:steel_ingot", "group:wood",          "group:wood"},
+		}
+	})
+	minetest.register_craft({
+		output = "fishing_boat:boat",
+		recipe = {
+			{"fishing_boat:hull", "fishing_boat:cabin"},
+		}
+	})
 end
 
