@@ -17,6 +17,8 @@ fishing_boat.passenger_pos = {
     [5] = {x=11,y=0,z=-20},
     }
 
+fishing_boat.default_buoyancy = 0.24
+
 fishing_boat.canvas_texture = "wool_white.png^[colorize:#f4e7c1:128"
 fishing_boat.metal_texture = "default_clay.png^[colorize:#a3acac:128"
 fishing_boat.black_texture = "default_clay.png^[colorize:#030303:200"

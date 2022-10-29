@@ -75,7 +75,7 @@ minetest.register_entity("fishing_boat:boat", {
     color2 = "#dc1818",
     logo = "fishing_boat_alpha_logo.png",
     timeout = 0;
-    buoyancy = 0.24,
+    buoyancy = fishing_boat.default_buoyancy,
     max_hp = 50,
     anchored = false,
     physics = fishing_boat.physics,
@@ -116,6 +116,7 @@ minetest.register_entity("fishing_boat:boat", {
             stored_passengers_locked = self._passengers_locked,
             stored_light_old_pos = self._light_old_pos,
             stored_show_light = self._show_light,
+            stored_buoyancy = self.buoyancy,
         })
     end,
 
@@ -143,6 +144,7 @@ minetest.register_entity("fishing_boat:boat", {
             self._passengers_locked = data.stored_passengers_locked
             self._light_old_pos = data.stored_light_old_pos
             self._show_light = data.stored_show_light
+            self.buoyancy = data.stored_buoyancy
             --minetest.debug("loaded: ", self._energy)
             local properties = self.object:get_properties()
             properties.infotext = data.stored_owner .. " nice Fishing boat"
@@ -311,7 +313,7 @@ minetest.register_entity("fishing_boat:boat", {
         local newroll = 0
         if self._last_roll ~= nil then newroll = self._last_roll end
         --oscilation when stoped
-        if longit_speed == 0 then
+        if longit_speed == 0 and self.buoyancy < 0.35 then
             local time_correction = (self.dtime/fishing_boat.ideal_step)
             --stoped
             if self._roll_state == nil then
@@ -409,6 +411,10 @@ minetest.register_entity("fishing_boat:boat", {
                 self._light:set_properties({textures={"fishing_boat_light_off.png","fishing_boat_black.png",}, glow=0})
             end
         end
+
+        --let sunk
+        if self.buoyancy > 0.35 and self.buoyancy < 1.02 then self.buoyancy = self.buoyancy + 0.001 end
+        if self.buoyancy > 0.30 then self._engine_running = false end
 
 
     end,
@@ -556,7 +562,8 @@ minetest.register_entity("fishing_boat:boat", {
                 local can_bypass = minetest.check_player_privs(clicker, {protection_bypass=true})
                 if clicker:get_player_control().aux1 == true then --lets see the inventory
                     local is_shared = false
-                    if name == self.owner or can_bypass then is_shared = true end
+                    --share to owner, bypass or if the ship is sunk
+                    if name == self.owner or can_bypass or self.buoyancy > 0.7 then is_shared = true end
                     for k, v in pairs(self._shared_owners) do
                         if v == name then
                             is_shared = true

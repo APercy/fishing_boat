@@ -15,7 +15,7 @@ end
 function fishing_boat.pilot_formspec(name)
     local basic_form = table.concat({
         "formspec_version[5]",
-        "size[6,8.8]",
+        "size[6,10]",
 	}, "")
 
     local player = minetest.get_player_by_name(name)
@@ -44,7 +44,31 @@ function fishing_boat.pilot_formspec(name)
     basic_form = basic_form.."button[1,6.8;2,1;disembark_l;<< Left]"
     basic_form = basic_form.."button[3,6.8;2,1;disembark_r;Right >>]"
 
+    basic_form = basic_form.."button[1,8.0;4,1;repair;Repair]"
+
     minetest.show_formspec(name, "fishing_boat:pilot_main", basic_form)
+end
+
+function fishing_boat.repair_formspec(name)
+    local basic_form = table.concat({
+        "formspec_version[3]",
+        "size[6,4]",
+	}, "")
+
+    local player = minetest.get_player_by_name(name)
+    local plane_obj = fishing_boat.getPlaneFromPlayer(player)
+    if plane_obj == nil then
+        return
+    end
+    local ent = plane_obj:get_luaentity()
+
+    local tax = math.ceil(fishing_boat.getRepairTax(ent))
+
+    basic_form = basic_form.."label[1,1.0;To do the repairs, we need\n"..tax.." steel ingots\nfrom your inventory]"
+    basic_form = basic_form.."button[1.0,2.6;1.8,1;cancel;Cancel]"
+    basic_form = basic_form.."button[3.4,2.6;1.8,1;doit;Do it]"
+
+    minetest.show_formspec(name, "fishing_boat:repair", basic_form)
 end
 
 function fishing_boat.pax_formspec(name)
@@ -243,8 +267,55 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                     ent._show_light = false
                 end
             end
+            if fields.repair then
+                fishing_boat.repair_formspec(name)
+            end
         end
         minetest.close_formspec(name, "fishing_boat:pilot_main")
+    end
+    if formname == "fishing_boat:repair" then
+        local name = player:get_player_name()
+        local plane_obj = fishing_boat.getPlaneFromPlayer(player)
+        if plane_obj == nil then
+            minetest.close_formspec(name, "fishing_boat:repair")
+            return
+        end
+        local ent = plane_obj:get_luaentity()
+        if ent then
+		    if fields.doit then
+                local plane_obj = fishing_boat.getPlaneFromPlayer(player)
+                if plane_obj == nil then
+                    return
+                end
+                local ent = plane_obj:get_luaentity()
+                local buoyancy = ent.buoyancy
+                local tax = math.ceil(fishing_boat.getRepairTax(ent))
+
+                local inventory_item = "default:steel_ingot"
+                local inv = player:get_inventory()
+                if inv:contains_item("main", inventory_item) then
+                    if tax > 6 then
+                        --the ship is sunk, so check if the player have all the value to repair
+                        if inv:contains_item("main", inventory_item.." "..tax) == false then
+                            minetest.chat_send_player(player:get_player_name(), "The boat is sunk, so you need all the ammount to do the repair.")
+                            minetest.close_formspec(name, "fishing_boat:repair")
+                            return
+                        end
+                    end
+                    local stack = ItemStack(inventory_item.." "..tax)
+                    --local stack = ItemStack(inventory_item .. " 1")
+                    local taken = inv:remove_item("main", stack)
+                    local total = taken:get_count()
+                    local buoyancy_tax = 0.02
+                    ent.buoyancy = buoyancy - (total*buoyancy_tax)
+                    if ent.buoyancy < fishing_boat.default_buoyancy then ent.buoyancy = fishing_boat.default_buoyancy end
+                else
+                    minetest.chat_send_player(player:get_player_name(), "You need steel ingots in your inventory to perform this repair.")
+                end
+		    end
+
+        end
+        minetest.close_formspec(name, "fishing_boat:repair")
     end
 end)
 

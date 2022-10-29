@@ -1,3 +1,10 @@
+function fishing_boat.getRepairTax(self)
+    local difference = self.buoyancy - fishing_boat.default_buoyancy
+    local tax = 0.02
+    local steel = difference / tax
+    return steel
+end
+
 function fishing_boat.testDamage(self, velocity, position)
     if self._last_accell == nil then return end
     local p = position --self.object:get_pos()
@@ -37,12 +44,14 @@ function fishing_boat.testDamage(self, velocity, position)
         if damage > 5 then
             self._power_lever = 0
         end
+        self.buoyancy = self.buoyancy + (damage/100)
 
         if self.driver_name then
             local player_name = self.driver_name
 
             local player = minetest.get_player_by_name(player_name)
             if player then
+                minetest.chat_send_player(self.driver_name,core.colorize('#ff0000', " >>> The boat was damaged, repair it, please."))
 		        if player:get_hp() > 0 then
 			        player:set_hp(player:get_hp()-(damage/2))
 		        end
