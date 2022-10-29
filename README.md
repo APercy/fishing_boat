@@ -2,7 +2,6 @@ Minetest 5.4 mod: Fishing Boat
 ========================================
 
 This mod implements a fishing boat for minetest.
-The mod was made for fun, but tries to provide an immersion on it's operation.
 It can carry 5 people.
 
 To run it's engine, it is necessary to provide biofuel. To supply it,
