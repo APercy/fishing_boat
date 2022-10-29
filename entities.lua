@@ -106,7 +106,6 @@ minetest.register_entity("fishing_boat:boat", {
             stored_energy = self._energy,
             stored_owner = self.owner,
             stored_shared_owners = self._shared_owners,
-            stored_hp = self.hp,
             stored_color = self.color,
             stored_color2 = self.color2,
             stored_anchor = self.anchored,
@@ -133,7 +132,6 @@ minetest.register_entity("fishing_boat:boat", {
             self._energy = data.stored_energy or 0
             self.owner = data.stored_owner or ""
             self._shared_owners = data.stored_shared_owners or {}
-            self.hp = data.stored_hp or 50
             self.color = data.stored_color
             self.color2 = data.stored_color2
             self.logo = data.stored_logo or "fishing_boat_alpha_logo.png"
