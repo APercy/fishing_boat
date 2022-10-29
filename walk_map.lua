@@ -34,28 +34,28 @@ function fishing_boat.boat_deck_map(pos, dpos)
         new_pos.x = fishing_boat.clamp(new_pos.x, -limit, limit)
         return new_pos
     end
-    if position.z > -14 and position.z < -6 then
+    if position.z > -14 and position.z < -5 then
         new_pos.y = 0
         limit = 16
         new_pos.x = fishing_boat.clamp(new_pos.x, -limit, limit)
 
         --test back cabin collision
         limit = 14.5
-        if position.x > -limit and position.x <= limit and position.z > -8 then
+        if position.x > -limit and position.x <= limit and position.z > -6 then
             new_pos.y = 0
             if orig_pos.x < 1 or orig_pos.x > 8 then
-                new_pos.z = fishing_boat.clamp(new_pos.z, -14, -8)
+                new_pos.z = fishing_boat.clamp(new_pos.z, -14, -6)
             end
         end
 
         return new_pos
     end
 
-    if position.z > -6 and position.z < 10 then
+    if position.z > -5 and position.z < 10 then
         new_pos.y = 0
         limit = 16
         new_pos.x = fishing_boat.clamp(new_pos.x, -limit, limit)
-        if position.z > -2 then
+        if position.z > -4 then
             --internal wall
             limit = 14.5
             if orig_pos.x <= -limit or orig_pos.x >= limit then

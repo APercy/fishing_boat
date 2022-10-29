@@ -14,14 +14,14 @@ The information panel will be on the left and bottom of the screen.
 Forward increases the propeller power, Backward reduces. To go reverse, hold aux (E key)
 and backward together. There is a power mode. When the lever reaches the up limit, hold E
 and forward to increase the acceleration.
-The blimp inventory can be accessed by Aux (E) + rightclick.
+The boat inventory can be accessed by Aux (E) + rightclick or by the captain menu.
 
 Shared owners:
 This vehicle was made to be shared with a team. So the owner can set more users to
 operate it. Inside the boat, just use the command /fishing_boat_share <name>
-To remove someone from the sharing, /blimp_remove <name>
+To remove someone from the sharing, /fishing_boat_remove <name>
 To list the owners, /fishing_boat_list
-Is possible to lock the blimp access, so only the owners can enter: /fishing_boat_lock true
+Is possible to lock the boat access, so only the owners can enter: /fishing_boat_lock true
 To let anyone enter, /fishing_boat_lock false
 All shared owners can access the boat inventory
 

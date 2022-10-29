@@ -26,10 +26,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
                 "* Punch a dye, but holding Aux (E) key to change the secondary color.\n",
                 "* Forward or backward while in drive position: controls the power lever \n",
                 "* Left or right while in drive position: controls the direction \n",
-                "* Jump and sneak: controls the up and down movement \n",
-                "* Aux (E) + right click while inside: acess inventory \n",
-                "* Aux (E) + backward while in drive position: the machine does backward \n",
-                "* Aux (E) + foward while in drive position: extra power \n"
+                "* Jump: boat horn \n",
+                "* Aux (E) + right click while inside: access inventory \n",
+                "* Aux (E) + backward, while in drive position: the machine does backward \n",
+                "* Aux (E) + foward, while in drive position: extra power \n"
 			}
 			local shortcut_form = table.concat({
 				"formspec_version[3]",
@@ -43,11 +43,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if fields.fuel then
 			local text = {
 				"Fuel \n\n",
-				"To fly it, it is necessary to provide some items, such as fuel to be burned and \n",
-				"water for the boiler. The fuel can be coal, coal block or wood. To supply it, \n",
-				"be on board and punch the necessary items on the airship.\n",
-                "There is another way to load water to the boiler: if it is landed on water, it can load \n",
-				"it through the menu. But the current pressure will be lost. \n"
+				"It uses biofuel to get the engine worling. To supply it, \n",
+				"be on board and punch the necessary fuel on the ship.\n"
 			}
 			local fuel_form = table.concat({
 				"formspec_version[3]",
