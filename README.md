@@ -2,6 +2,8 @@ Minetest 5.4 mod: Fishing Boat
 ========================================
 
 This mod implements a fishing boat for minetest.
+
+It's physics comes indirectly from Sailing Kit from Thermos, as it descend from Motorboat and then Sailing Kit. 
 It can carry 5 people.
 
 To run it's engine, it is necessary to provide biofuel. To supply it,
