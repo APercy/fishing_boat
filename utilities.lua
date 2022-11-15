@@ -208,7 +208,11 @@ function fishing_boat.dettach_pax(self, player, side)
             else
                 pos.y = pos.y - 2.5
             end
-            player:set_pos(pos)
+            local n = minetest.get_node_or_nil(pos)
+            if n and n.name == 'air' then
+                player:set_pos(pos)
+            end
+
         end, player:get_pos())
     end
 end
