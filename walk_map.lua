@@ -147,33 +147,32 @@ function fishing_boat.navigate_deck(pos, dpos, player)
 end
 
 --note: index variable just for the walk
+--this function was improved by Auri Collings on steampunk_blimp
 local function get_result_pos(self, player, index)
     local pos = nil
     if player then
+        local ctrl = player:get_player_control()
+
         local direction = player:get_look_horizontal()
         local rotation = self.object:get_rotation()
         direction = direction - rotation.y
-        local y_rot = -math.deg(direction)
-        local ctrl = player:get_player_control()
+
         pos = vector.new()
-        pos.y = y_rot --okay, this is strange to keep here, but as I dont use it anyway...
+
         if ctrl.up or ctrl.down or ctrl.left or ctrl.right then
             player_api.set_animation(player, "walk", 30)
-            local dir = 0
-            if ctrl.up then dir = -1 end
-            if ctrl.down then dir = 1 end
-            if ctrl.left then
-                direction = direction - math.rad(90)
-                dir = 1
-            end
-            if ctrl.right then
-                direction = direction + math.rad(90)
-                dir = 1
-            end
+
+            local speed = 0.4
+
+            dir = vector.new(ctrl.up and -1 or ctrl.down and 1 or 0, 0, ctrl.left and 1 or ctrl.right and -1 or 0)
+            dir = vector.normalize(dir)
+            dir = vector.rotate(dir, {x = 0, y = -direction, z = 0})
+
             local time_correction = (self.dtime/fishing_boat.ideal_step)
-            local move = 0.3 * dir * time_correction
-            pos.x = move * math.cos(-direction)
-            pos.z = move * math.sin(-direction)
+            local move = speed * time_correction
+
+            pos.x = move * dir.x
+            pos.z = move * dir.z
 
             --lets fake walk sound
             if self._passengers_base_pos[index].dist_moved == nil then self._passengers_base_pos[index].dist_moved = 0 end
@@ -185,19 +184,13 @@ local function get_result_pos(self, player, index)
                         max_hear_distance = 5,
                         ephemeral = true,})
             end
-
-            --[[
-            sin(theta) = opposite/hypotenuse
-            cos(theta) = adjacent/hypotenuse
-            For X "Distance * COS ( Angle )"
-            For Y "Distance * SIN ( Angle )"
-            ]]--
         else
             player_api.set_animation(player, "stand")
         end
     end
     return pos
 end
+
 
 function fishing_boat.move_persons(self)
     --self._passenger = nil
