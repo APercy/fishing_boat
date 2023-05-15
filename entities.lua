@@ -424,9 +424,6 @@ minetest.register_entity("fishing_boat:boat", {
         local is_admin = false
         is_admin = minetest.check_player_privs(puncher, {server=true})
 		local name = puncher:get_player_name()
-        if self.owner and self.owner ~= name and self.owner ~= "" then
-            if is_admin == false then return end
-        end
         if self.owner == nil then
             self.owner = name
         end
@@ -446,7 +443,9 @@ minetest.register_entity("fishing_boat:boat", {
             --refuel
             fishing_boat.load_fuel(self, puncher)
         end
-
+        if self.owner and self.owner ~= name and self.owner ~= "" then
+            if is_admin == false then return end
+        end
         -- deal with painting or destroying
         if itmstck then
             local _,indx = item_name:find('dye:')
