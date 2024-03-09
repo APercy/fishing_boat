@@ -148,6 +148,7 @@ minetest.register_entity("fishing_boat:boat", {
             properties.infotext = data.stored_owner .. " nice Fishing boat"
             self.object:set_properties(properties)
             if data.remove then
+                airutils.destroy_inventory(self)
                 self.object:remove()
                 return
             end
