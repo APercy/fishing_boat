@@ -388,7 +388,12 @@ minetest.register_entity("fishing_boat:boat", {
         self.object:set_bone_position("rudder", {x=0,y=0,z=0}, {x=0,y=self._rudder_angle,z=0})
         self.object:set_bone_position("timao", {x=0,y=7.06,z=15}, {x=0,y=0,z=self._rudder_angle*8})
 
-        local N_angle = math.deg(newyaw)
+        local compass_angle = newyaw
+        local rem_obj = self.object:get_attach()
+        if rem_obj then
+            compass_angle = rem_obj:get_rotation().y
+        end
+        local N_angle = math.deg(compass_angle)
         local S_angle = N_angle + 180
 
         self.object:set_bone_position("compass_axis", {x=0,y=11.3,z=19.2}, {x=0, y=S_angle, z=0}) -- y 19.24    z 11.262
