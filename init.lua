@@ -2,7 +2,7 @@ fishing_boat={}
 fishing_boat.gravity = tonumber(minetest.settings:get("movement_gravity")) or 9.8
 fishing_boat.trunk_slots = 50
 fishing_boat.fuel = {['biofuel:biofuel'] = {amount=1},['biofuel:bottle_fuel'] = {amount=1},
-        ['biofuel:phial_fuel'] = {amount=0.25}, ['biofuel:fuel_can'] = {amount=10}}
+        ['biofuel:phial_fuel'] = {amount=0.25}, ['biofuel:fuel_can'] = {amount=10}, ['airutils:biofuel'] = {amount=1}}
 fishing_boat.ideal_step = 0.02
 fishing_boat.rudder_limit = 30
 fishing_boat.iddle_rotation = 0
