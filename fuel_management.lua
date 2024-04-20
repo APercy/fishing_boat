@@ -22,7 +22,7 @@ function fishing_boat.load_fuel(self, player)
 
     --minetest.chat_send_all("fuel: ".. dump(item_name))
     local fuel = fishing_boat.contains(fishing_boat.fuel, item_name)
-    if fuel then
+    if fuel ~= false then
         local stack = ItemStack(item_name .. " 1")
 
         if self._energy < fishing_boat.MAX_FUEL then
