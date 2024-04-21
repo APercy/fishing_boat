@@ -2,7 +2,7 @@
 -- fuel
 --
 fishing_boat.MAX_FUEL = minetest.settings:get("fishing_boat_max_fuel") or 30
-fishing_boat.FUEL_CONSUMPTION = minetest.settings:get("fishing_boat_fuel_consumption") or 6000
+fishing_boat.FUEL_CONSUMPTION = minetest.settings:get("fishing_boat_fuel_consumption") or 0.000001
 
 function fishing_boat.contains(table, val)
     for k,v in pairs(table) do

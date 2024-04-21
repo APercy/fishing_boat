@@ -29,15 +29,16 @@ function fishing_boat.engine_set_sound_and_animation(self)
         -- calculate energy consumption --
         ----------------------------------
         if self._energy > 0 then
-            local zero_reference = vector.new()
-            local acceleration = math.abs(self._power_lever)/1500
-            local consumed_power = acceleration/fishing_boat.FUEL_CONSUMPTION
+            local acceleration = math.abs(self._power_lever)
+            local consumed_power = acceleration*fishing_boat.FUEL_CONSUMPTION
             self._energy = self._energy - consumed_power;
+            --minetest.chat_send_all(dump(consumed_power))
+            minetest.chat_send_all(dump(self._energy))
         end
-        if self._energy <= 0 and self._engine_running then
+        if self._energy <= 0 then
             self._engine_running = false
             if self.sound_handle then minetest.sound_stop(self.sound_handle) end
-		    self.object:set_animation_frame_speed(0)
+	        self.object:set_animation_frame_speed(0)
         end
         ----------------------------
         -- end energy consumption --
