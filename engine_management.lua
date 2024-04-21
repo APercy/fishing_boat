@@ -33,7 +33,7 @@ function fishing_boat.engine_set_sound_and_animation(self)
             local consumed_power = acceleration*fishing_boat.FUEL_CONSUMPTION
             self._energy = self._energy - consumed_power;
             --minetest.chat_send_all(dump(consumed_power))
-            minetest.chat_send_all(dump(self._energy))
+            --minetest.chat_send_all(dump(self._energy))
         end
         if self._energy <= 0 then
             self._engine_running = false
