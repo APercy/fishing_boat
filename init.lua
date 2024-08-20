@@ -24,6 +24,11 @@ fishing_boat.metal_texture = "default_clay.png^[colorize:#a3acac:128"
 fishing_boat.black_texture = "default_clay.png^[colorize:#030303:200"
 fishing_boat.wood_texture = "default_clay.png^[colorize:#3a270d:230"
 
+fishing_boat.use_particles = false
+if minetest.settings:get_bool('fishing_boat_enable_particles', false) then
+    fishing_boat.use_particles = true
+end
+
 fishing_boat.textures = {
             "fishing_boat_white.png", -- faixa superior que envolve o casco
             "default_junglewood.png", --assoalho

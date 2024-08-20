@@ -378,6 +378,18 @@ minetest.register_entity("fishing_boat:boat", {
 			newpitch = velocity.y * math.rad(6)
 
             self.object:set_acceleration(accel)
+
+            if fishing_boat.use_particles == true and airutils.add_splash then
+                local splash_frequency = 0.15
+                if self._last_splash == nil then self._last_splash = 0.5 else self._last_splash = self._last_splash + self.dtime end
+                if longit_speed >= 2.0 and self._last_vel and self._last_splash >= splash_frequency then
+                    self._last_splash = 0
+                    local splash_pos = vector.new(curr_pos)
+                    splash_pos.y = splash_pos.y - 0.6
+                    airutils.add_splash(splash_pos, newyaw, 22)
+                end
+            end
+
 		end
 
         fishing_boat.engine_set_sound_and_animation(self)
