@@ -142,7 +142,7 @@ minetest.register_entity("fishing_boat:boat", {
             self._passengers_locked = data.stored_passengers_locked
             self._light_old_pos = data.stored_light_old_pos
             self._show_light = data.stored_show_light
-            self.buoyancy = data.stored_buoyancy
+            self.buoyancy = data.stored_buoyancy or fishing_boat.default_buoyancy
             --minetest.debug("loaded: ", self._energy)
             local properties = self.object:get_properties()
             properties.infotext = data.stored_owner .. " nice Fishing boat"

@@ -144,14 +144,15 @@ minetest.register_craftitem("fishing_boat:boat", {
                 --minetest.chat_send_all('passengers: '.. dump(ent._passengers))
                 local owner = placer:get_player_name()
                 ent.owner = owner
+                ent.buoyancy = fishing_boat.default_buoyancy
 			    boat:set_yaw(placer:get_look_horizontal())
 			    itemstack:take_item()
                 airutils.create_inventory(ent, fishing_boat.trunk_slots, owner)
 
-                local properties = ent.object:get_properties()
+                --[[local properties = ent.object:get_properties()
                 properties.infotext = owner .. " nice boat"
                 boat:set_properties(properties)
-                --fishing_boat.attach_pax(ent, placer)
+                --fishing_boat.attach_pax(ent, placer)]]--
 		    end
 
 		    return itemstack

@@ -18,7 +18,7 @@ function fishing_boat.engine_set_sound_and_animation(self)
                 fishing_boat.engineSoundPlay(self)
             end
             --minetest.chat_send_all('test2')
-            local factor = 0.5
+            local factor = 0.1
             if (math.abs(self._power_lever) > math.abs(self._last_applied_power) + factor) or (math.abs(self._power_lever) + factor < math.abs(self._last_applied_power)) then
                 fishing_boat.engineSoundPlay(self)
             end
